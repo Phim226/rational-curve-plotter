@@ -1,5 +1,6 @@
 from curve.random_polynomial import RandPolynomial
 from curve.rational_function import RationalFunction
+from curve.rational_function import RationalDerivative
 from main_window.element_keys import *
 
 def initialise_random_polynomials(num_degree = None, den_degree = None):
@@ -23,4 +24,4 @@ def initialise_curve_objects(values):
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
-    #derivative = RationalDerivative(numerator, denominator)
+    derivative = RationalDerivative(numerator, denominator)

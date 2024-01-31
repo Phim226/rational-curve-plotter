@@ -10,35 +10,13 @@ delta = 0.0000001 #small value so that curve is evaluated close but not equal to
 data_points = 300000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
 
 def define_global_variables():
-    global numerator, denominator, rational_function, num_coeffs, den_coeffs, den_roots
+    global numerator, denominator, rational_function, num_coeffs, den_coeffs, discontinuities
     numerator = coi.numerator
     denominator = coi.denominator
     rational_function = coi.rational_function
     num_coeffs = numerator.coefficients
     den_coeffs = denominator.coefficients
-    den_roots = rational_function.reduced_denominator_roots
-
-def initialise_random_polynomials(num_degree = None, den_degree = None):
-    return [RandPolynomial(num_degree), RandPolynomial(den_degree)]
-
-def initialise_curve_objects(**forced_values):
-    force_num_degree, force_den_degree = forced_values.get('forced')[0], forced_values.get('forced')[1]
-    forced_num_degree, forced_den_degree = forced_values.get('forced_degrees')[0], forced_values.get('forced_degrees')[1]
-    if force_num_degree and not force_den_degree:
-        numerator, denominator = initialise_random_polynomials(num_degree = forced_num_degree)
-    elif not force_num_degree and force_den_degree:
-        numerator, denominator = initialise_random_polynomials(den_degree = forced_den_degree)
-    elif force_num_degree and force_den_degree:
-        numerator, denominator = initialise_random_polynomials(num_degree = forced_num_degree, den_degree = forced_den_degree)
-    else:
-        numerator, denominator = initialise_random_polynomials()
-    #change these coefficients to manually assign coefficients for debugging
-    #numerator = RandPolynomial(coefficients=[-9, -1, -7])
-    #denominator = RandPolynomial(coefficients=[-2,-9,-7])
-    print("numerator coefficients: ", numerator.coefficients)
-    print("denominator coefficients: ", denominator.coefficients)
-    rational_function = RationalFunction(numerator, denominator)
-    define_global_variables(rational_function, numerator, denominator)
+    discontinuities = rational_function.discontinuities
 
 """
 Alters the position of the axes - moves them to the centre
@@ -80,19 +58,19 @@ Sets the initial limits of the graph to be x = -10 and x = 10, and adjusts based
 """
 def adjust_xaxis():
     x_lims_init = [-10, 10]
-    if len(den_roots)==0:
+    if len(discontinuities)==0:
         plt.xlim((x_lims_init[0],x_lims_init[1]))
     else:
-        if min(den_roots)<-10:
-            x_lims_init[0] = min(den_roots)-5
-        if len(den_roots)>1 and max(den_roots)>10:
-            x_lims_init[1] = max(den_roots)+5
+        if min(discontinuities)<-10:
+            x_lims_init[0] = min(discontinuities)-5
+        if len(discontinuities)>1 and max(discontinuities)>10:
+            x_lims_init[1] = max(discontinuities)+5
         plt.xlim((x_lims_init[0],x_lims_init[1]))
 
 def plot_asymptotes():
     num_coeffs, num_degree = numerator.coefficients, numerator.degree
     den_coeffs, den_degree = denominator.coefficients, denominator.degree
-    for z in den_roots:
+    for z in discontinuities:
         plt.axvline(z, c = "red", ls = "dashed")
     if num_degree<den_degree:
         plt.axhline(0, c = "red", ls = "dashed")
@@ -108,64 +86,24 @@ def plot_asymptotes():
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
 
+def plot_graph_section(x_min, x_max, eval, domains):
+    X = np.linspace(x_min+delta, x_max-delta, data_points)
+    plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-")
+    domains.append(X)
 
 def plot_curve():
     adjust_xaxis()
+    #TODO: change where curve_latex is generated (probably in class itself)
     curve_latex = rational_function.format_function_label()
-    eval = rational_function.get_function_evaluator()
+    eval = rational_function.function_evaluator
     #Graph has to be split into various separate sections to account for vertical asymptotes
-    #TODO: tidy up code, and generalise to account for arbitrary numbers of graph sections
-    if len(den_roots)==1:
-        X1 = np.linspace(x_lims[0], den_roots[0]-delta, data_points)
-        X2 = np.linspace(den_roots[0]+delta, x_lims[1], data_points)
-        plt.plot(X1, eval(X1), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-        plt.plot(X2, eval(X2), color="black",  linewidth=2, linestyle="-")
-        adjust_yaxis([X1, X2], eval)  
-    elif len(den_roots)==2:
-        X1 = np.linspace(x_lims[0], min(den_roots)-delta, data_points)
-        X2 = np.linspace(min(den_roots)+delta, max(den_roots)-delta, data_points)
-        X3 = np.linspace(max(den_roots)+delta, x_lims[1], data_points)
-        plt.plot(X1, eval(X1), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-        plt.plot(X2, eval(X2), color="black",  linewidth=2, linestyle="-")
-        plt.plot(X3, eval(X3), color="black",  linewidth=2, linestyle="-")
-        adjust_yaxis([X1, X2, X3], eval)
+    domains = []
+    x_min = x_lims[0]
+    if discontinuities:
+        for d in discontinuities:
+            plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
+            x_min = d
+        plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
     else:
-        X = np.linspace(x_lims[0], x_lims[1], data_points, endpoint=True)
-        plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-        adjust_yaxis([X], eval)
-
-class CurvePlotter():
-
-    x_lims = [-5000, 5000] #the graph is not plotted for x values past these limits
-    delta = 0.0000001 #small value so that curve is evaluated close but not equal to values where the denominator is 0 
-    data_points = 300000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
-
-    def __init__(self, numerator, denominator, rational_function, derivative):
-        self.numerator = numerator
-        self.denominator = denominator
-        self.rational_function = rational_function
-        self.derivative = derivative
-    
-    def plot_curve(self, eval, curve_latex):
-        adjust_xaxis()
-        print(den_roots)
-        #Graph has to be split into various separate sections to account for vertical asymptotes
-        #TODO: tidy up code, and generalise to account for arbitrary numbers of graph sections
-        if len(den_roots)==1:
-            X1 = np.linspace(x_lims[0], den_roots[0]-delta, data_points)
-            X2 = np.linspace(den_roots[0]+delta, x_lims[1], data_points)
-            plt.plot(X1, eval(X1), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-            plt.plot(X2, eval(X2), color="black",  linewidth=2, linestyle="-")
-            adjust_yaxis([X1, X2], eval)  
-        elif len(den_roots)==2:
-            X1 = np.linspace(x_lims[0], min(den_roots)-delta, data_points)
-            X2 = np.linspace(min(den_roots)+delta, max(den_roots)-delta, data_points)
-            X3 = np.linspace(max(den_roots)+delta, x_lims[1], data_points)
-            plt.plot(X1, eval(X1), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-            plt.plot(X2, eval(X2), color="black",  linewidth=2, linestyle="-")
-            plt.plot(X3, eval(X3), color="black",  linewidth=2, linestyle="-")
-            adjust_yaxis([X1, X2, X3], eval)
-        else:
-            X = np.linspace(x_lims[0], x_lims[1], data_points, endpoint=True)
-            plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-", label="$y="+curve_latex+"$")
-            adjust_yaxis([X], eval)
+        plot_graph_section(x_lims[0], x_lims[1], eval, domains)
+    adjust_yaxis(domains, eval)
