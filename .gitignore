@@ -1,9 +1,10 @@
 /.vscode
 /mess_about_script.py
 /__pycache__
-/curve/__pycache__
-/main_window/__pycache__
-/main_window/analytics/__pycache__
-/main_window/curve_label_display/__pycache__
-/main_window/graph/__pycache__
-/main_window/options/__pycache__
+curve/__pycache__
+main_window/__pycache__
+main_window/analytics/__pycache__
+main_window/curve_label_display/__pycache__
+main_window/graph/__pycache__
+main_window/options/__pycache__
+curve/__pycache__/random_polynomial.cpython-312.pyc
