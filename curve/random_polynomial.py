@@ -3,8 +3,6 @@ import random as ran
 import sympy as sp
 import curve.symbol_handler as sh
 
-#TODO: convert symbolic root calculation into evaluated roots (symbolic roots are sympy classes, not standard python data types that can be compared/plotted properly)
-
 class RandPolynomial():
 
     x = sp.symbols('x')
