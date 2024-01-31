@@ -1,12 +1,10 @@
-from curve.random_polynomial import RandPolynomial
-from curve.rational_function import RationalFunction
 import numpy as np
 import matplotlib.pyplot as plt
 import curve.curve_objects_initialiser as coi
 
 #global variables 
 x_lims = [-5000, 5000] #the graph is not plotted for x values past these limits
-delta = 0.0000001 #small value so that curve is evaluated close but not equal to values where the denominator is 0 
+delta = 0.0000001 #small value so that curve is evaluated close but not equal to discontinuities 
 data_points = 300000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
 
 def define_global_variables():
@@ -93,8 +91,7 @@ def plot_graph_section(x_min, x_max, eval, domains):
 
 def plot_curve():
     adjust_xaxis()
-    #TODO: change where curve_latex is generated (probably in class itself)
-    curve_latex = rational_function.format_function_label()
+    curve_latex = rational_function.function_latex
     eval = rational_function.function_evaluator
     #Graph has to be split into various separate sections to account for vertical asymptotes
     domains = []
