@@ -1,5 +1,6 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from main_window.element_keys import *
+import curve.curve_objects_initialiser as coi
 import curve.curve_plotter as cplot
 import matplotlib.pyplot as plt
 
@@ -29,11 +30,12 @@ def adjust_axes():
 def build_curve_figure(values):
     plt.close() #previous figure needs to be closed explicitly otherwise matplotlib stores each generated plot in memory. A runtime warning will appear after 20 graphs are plotted if they aren't closed
     plt.figure(figsize=(10, 6), dpi=80)#figsize sets width/height in inches, dpi is figure resolution in inches (dots-per-inch or pixels-per-inch)
-    adjust_axes() 
-    cplot.initialise_curve_objects(forced = [values[FORCE_NUM_DEG_KEY], values[FORCE_DEN_DEG_KEY]],
-                                   forced_degrees = [values[NUM_DEG_SPIN_KEY], values[DEN_DEG_SPIN_KEY]])
+    adjust_axes()
+    cplot.define_global_variables()
+    #cplot.initialise_curve_objects(forced = [values[FORCE_NUM_DEG_KEY], values[FORCE_DEN_DEG_KEY]],
+    #                               forced_degrees = [values[NUM_DEG_SPIN_KEY], values[DEN_DEG_SPIN_KEY]])
     plot_asmyptotes = values[PLOT_ASYMP_KEY]
-    if plot_asmyptotes and not cplot.rational_function.reduces_to_constant:
+    if plot_asmyptotes and not coi.rational_function.reduces_to_constant:
         cplot.plot_asymptotes()
     cplot.plot_curve()
     plt.grid()

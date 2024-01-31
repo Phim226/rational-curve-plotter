@@ -53,7 +53,7 @@ class RationalFunction():
 class RationalDerivative(RationalFunction):
      
     def __init__(self, numerator, denominator):
-        super.__init__(numerator, denominator)
+        super.__init__(self, numerator, denominator)
         num_coeffs, den_coeffs = self.calculate_derivative_coefficients(numerator.coefficients, denominator.coefficients)
         self.function_evaluator = self.get_function_evaluator(num_coeffs, den_coeffs)
     

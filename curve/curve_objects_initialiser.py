@@ -1,14 +1,14 @@
 from curve.random_polynomial import RandPolynomial
 from curve.rational_function import RationalFunction
-from curve.rational_function import RationalDerivative
+from main_window.element_keys import *
 
 def initialise_random_polynomials(num_degree = None, den_degree = None):
     return [RandPolynomial(num_degree), RandPolynomial(den_degree)]
 
-def initialise_curve_objects(**forced_values):
-    global numerator, denominator, rational_function, derivative
-    force_num_degree, force_den_degree = forced_values.get('forced')[0], forced_values.get('forced')[1]
-    forced_num_degree, forced_den_degree = forced_values.get('forced_degrees')[0], forced_values.get('forced_degrees')[1]
+def initialise_curve_objects(values):
+    global numerator, denominator, rational_function
+    force_num_degree, force_den_degree = values[FORCE_NUM_DEG_KEY], values[FORCE_DEN_DEG_KEY]
+    forced_num_degree, forced_den_degree = values[NUM_DEG_SPIN_KEY], values[DEN_DEG_SPIN_KEY]
     if force_num_degree and not force_den_degree:
         numerator, denominator = initialise_random_polynomials(num_degree = forced_num_degree)
     elif not force_num_degree and force_den_degree:
@@ -23,4 +23,4 @@ def initialise_curve_objects(**forced_values):
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
-    derivative = RationalDerivative(numerator, denominator)
+    #derivative = RationalDerivative(numerator, denominator)

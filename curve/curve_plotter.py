@@ -2,14 +2,18 @@ from curve.random_polynomial import RandPolynomial
 from curve.rational_function import RationalFunction
 import numpy as np
 import matplotlib.pyplot as plt
+import curve.curve_objects_initialiser as coi
 
 #global variables 
 x_lims = [-5000, 5000] #the graph is not plotted for x values past these limits
 delta = 0.0000001 #small value so that curve is evaluated close but not equal to values where the denominator is 0 
 data_points = 300000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
 
-def define_global_variables(rational_function, numerator, denominator):
-    global num_coeffs, den_coeffs, den_roots
+def define_global_variables():
+    global numerator, denominator, rational_function, num_coeffs, den_coeffs, den_roots
+    numerator = coi.numerator
+    denominator = coi.denominator
+    rational_function = coi.rational_function
     num_coeffs = numerator.coefficients
     den_coeffs = denominator.coefficients
     den_roots = rational_function.reduced_denominator_roots
@@ -18,7 +22,6 @@ def initialise_random_polynomials(num_degree = None, den_degree = None):
     return [RandPolynomial(num_degree), RandPolynomial(den_degree)]
 
 def initialise_curve_objects(**forced_values):
-    global numerator, denominator, rational_function
     force_num_degree, force_den_degree = forced_values.get('forced')[0], forced_values.get('forced')[1]
     forced_num_degree, forced_den_degree = forced_values.get('forced_degrees')[0], forced_values.get('forced_degrees')[1]
     if force_num_degree and not force_den_degree:
