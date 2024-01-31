@@ -46,7 +46,8 @@ class RationalFunction():
          return self.curve_evaluator(0)
     
     def format_function_label(self):
-         return sh.format_rat_func_label(self.numerator, self.denominator)
+         self.function_latex = sh.format_rat_func_label(self.numerator, self.denominator)
+         return self.function_latex
     
 
 class RationalDerivative(RationalFunction):

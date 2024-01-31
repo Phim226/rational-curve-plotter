@@ -1,6 +1,7 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from main_window.element_keys import *
 import matplotlib.pyplot as plt
+import curve.curve_plotter as cplot
 
 def draw_text_figure(canvas, text_fig):
     if canvas.children:
@@ -12,9 +13,9 @@ def draw_text_figure(canvas, text_fig):
     return figure_canvas_agg
 
 #TODO: have width be dynamic depending on type of label
-def build_curve_label_figure(window, curve_latex):
+def build_curve_label_figure(window):
     plt.close()
-    text = plt.text(-0.05, -0.01, '$y='+curve_latex+'$', fontsize=16)
+    text = plt.text(-0.05, -0.01, '$y='+cplot.rational_function.function_latex+'$', fontsize=16)
     text.set_backgroundcolor(window.BackgroundColor)
     text.get_figure().set_figheight(0.6)
     text.get_figure().set_figwidth(2.2)
@@ -27,8 +28,8 @@ def build_curve_label_figure(window, curve_latex):
     ax.spines['left'].set_visible(False)
     plt.subplots_adjust(left = 0.0, right = 1.0, bottom = 0.0, top = 1.0) #removes white border around graph
 
-def update_curve_label(window, curve_latex):
+def update_curve_label(window):
     window[CURVE_LABEL_KEY].update(visible = True)
-    build_curve_label_figure(window, curve_latex)
+    build_curve_label_figure(window)
     text_fig = plt.gcf()
     draw_text_figure(window[CURVE_LABEL_KEY].TKCanvas, text_fig)
