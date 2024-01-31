@@ -12,8 +12,8 @@ class RandPolynomial():
         self.coefficients = self.format_coeffs(coefficients) if coefficients else self.gen_rand_coeffs(forced_degree)
         self.degree = forced_degree if forced_degree is not None else self.get_degree(self.coefficients)
         self.symbolic_expression = sh.build_poly_exp(self.coefficients, self.degree)
-        self.symbolic_real_roots = self.get_symbolic_real_roots(self.symbolic_expression)
-        self.real_roots = self.get_real_roots(self.symbolic_real_roots)
+        self.symbolic_roots = self.get_symbolic_roots(self.symbolic_expression)
+        self.real_roots = self.get_real_roots(self.symbolic_roots)
 
     
     def gen_rand_coeffs(self, forced_degree):
@@ -40,7 +40,7 @@ class RandPolynomial():
     def get_degree(self, coeffs):
         return len(coeffs)-1
     
-    def get_symbolic_real_roots(self, symbolic_expression):
+    def get_symbolic_roots(self, symbolic_expression):
         roots = sp.solve(symbolic_expression, self.x)
         print(roots)
         return roots
