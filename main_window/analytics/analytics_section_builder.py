@@ -12,7 +12,7 @@ def Collapsible(layout, key, title='', arrows=(sg.SYMBOL_DOWN, sg.SYMBOL_RIGHT),
                       [sg.pin(sg.Column(layout, key=key, visible=not collapsed, metadata=arrows))]], pad=(0,0))
 
 def format_analytics_layout():
-    return [[sg.Frame('Roots', layout =[[sg.T('')]])],
+    return [[sg.Frame('Roots', layout =[[sg.T('', key = ROOTS_KEY)]])],
                     [sg.Frame('y-intercepts', layout =[[sg.T('')]])],
                     [sg.Frame('Stationary points', layout =[[sg.T('')]])],
                     [sg.Frame('Inflection points', layout =[[sg.T('')]])],

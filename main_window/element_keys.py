@@ -15,6 +15,7 @@ CURVE_LABEL_KEY = 'CURVE_LABEL'
 
 #Analytics section keys
 ANALYTIC_SEC_KEY = 'ANALYTIC_SECTION'
+ROOTS_KEY = 'ROOTS'
 
 #Button keys
 GEN_KEY = 'GENERATE'

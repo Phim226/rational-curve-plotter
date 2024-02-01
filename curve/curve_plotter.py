@@ -32,7 +32,7 @@ def adjust_axes():
 Adjusts the limits of the y-axis depending on the minimum and maximum values of the curve, or sets them to a default of -10 and 10
 """
 #TODO: improve decision making about initial y and x axis limits so that, apart from extreme cases, all graph sections are visible when first displaying the graph
-def adjust_yaxis(domains, eval):
+def _adjust_yaxis(domains, eval):
     ylim_low = -10.0
     ylim_high = 10.0
     eval_min = min(eval(i).min() for i in domains)
@@ -54,7 +54,7 @@ def adjust_yaxis(domains, eval):
 """
 Sets the initial limits of the graph to be x = -10 and x = 10, and adjusts based on position of asymptotes
 """
-def adjust_xaxis():
+def _adjust_xaxis():
     x_lims_init = [-10, 10]
     if len(discontinuities)==0:
         plt.xlim((x_lims_init[0],x_lims_init[1]))
@@ -84,13 +84,13 @@ def plot_asymptotes():
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
 
-def plot_graph_section(x_min, x_max, eval, domains):
+def _plot_graph_section(x_min, x_max, eval, domains):
     X = np.linspace(x_min+delta, x_max-delta, data_points)
     plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-")
     domains.append(X)
 
 def plot_curve():
-    adjust_xaxis()
+    _adjust_xaxis()
     curve_latex = rational_function.function_latex
     eval = rational_function.function_evaluator
     #Graph has to be split into various separate sections to account for vertical asymptotes
@@ -98,9 +98,9 @@ def plot_curve():
     x_min = x_lims[0]
     if discontinuities:
         for d in discontinuities:
-            plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
+            _plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
             x_min = d
-        plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
+        _plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
     else:
-        plot_graph_section(x_lims[0], x_lims[1], eval, domains)
-    adjust_yaxis(domains, eval)
+        _plot_graph_section(x_lims[0], x_lims[1], eval, domains)
+    _adjust_yaxis(domains, eval)

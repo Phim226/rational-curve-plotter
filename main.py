@@ -1,11 +1,13 @@
 from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section
 from main_window.curve_label_display.curve_label_figure import update_curve_label
+from main_window.analytics.analytics_section import update_analytics_section
 from main_window.graph.graph_control_section_builder import update_progress_message
 from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.element_keys import *
 import PySimpleGUI as sg
 
+#TODO: implement logging
 #TODO: add event where if update graph button is pressed then the same graph is plotted again with current window values
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
 def handle_event(window, values, event):
@@ -17,6 +19,7 @@ def handle_event(window, values, event):
         update_graph_section(values, window)
         update_progress_message(window, 'Formatting curve label...')
         update_curve_label(window)
+        update_analytics_section(window)
         #TODO: include update_analytics_section function
         update_progress_message(window, vis_bool = False)
         window.refresh()
