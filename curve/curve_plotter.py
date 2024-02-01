@@ -17,18 +17,6 @@ def define_global_variables():
     discontinuities = rational_function.discontinuities
 
 """
-Alters the position of the axes - moves them to the centre
-"""
-def adjust_axes():
-    ax = plt.gca()  # gca stands for 'get current axis'
-    ax.spines['right'].set_color('none')
-    ax.spines['top'].set_color('none')
-    ax.xaxis.set_ticks_position('bottom')
-    ax.spines['bottom'].set_position(('data',0))
-    ax.yaxis.set_ticks_position('left')
-    ax.spines['left'].set_position(('data',0))
-
-"""
 Adjusts the limits of the y-axis depending on the minimum and maximum values of the curve, or sets them to a default of -10 and 10
 """
 #TODO: improve decision making about initial y and x axis limits so that, apart from extreme cases, all graph sections are visible when first displaying the graph
