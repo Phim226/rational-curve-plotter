@@ -1,6 +1,5 @@
 from curve.random_polynomial import RandPolynomial
 from curve.rational_function import RationalFunction
-from curve.rational_function import RationalDerivative
 from main_window.element_keys import *
 
 def initialise_random_polynomials(num_degree = None, den_degree = None):
@@ -19,9 +18,10 @@ def initialise_curve_objects(values):
     else:
         numerator, denominator = initialise_random_polynomials()
     #change these coefficients to manually assign coefficients for debugging
-    #numerator = RandPolynomial(coefficients=[-10, -2, -4])
-    #denominator = RandPolynomial(coefficients=[-2,0,0])
+    #numerator = RandPolynomial(coefficients=[1, 8, -3])
+    #denominator = RandPolynomial(coefficients=[3,-1, -1])
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
-    derivative = RationalDerivative(numerator, denominator)
+    print("stationary points are: ", rational_function.calculate_stationary_points())
+    print("inflection points are: ", rational_function.calculate_inflection_points())
