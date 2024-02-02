@@ -19,8 +19,8 @@ def handle_event(window, values, event):
         update_graph_section(values, window)
         update_progress_message(window, 'Formatting curve label...')
         update_curve_label(window)
+        update_progress_message(window, 'Updating analytics...')
         update_analytics_section(window)
-        #TODO: include update_analytics_section function
         update_progress_message(window, vis_bool = False)
         window.refresh()
         window[GEN_KEY].update(disabled=False)

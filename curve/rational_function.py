@@ -4,8 +4,6 @@ import numpy as np
 import curve.symbol_handler as sh
 
 #TODO: (MAYBE) generate properly formatted derivative function to display in analytics section
-
-
 class RationalFunction():
 
      def __init__(self, numerator, denominator):
@@ -34,14 +32,22 @@ class RationalFunction():
      def check_if_function_reduces_to_constant(self, expression): 
          return sp.simplify(expression).is_real
 
-     def calculate_y_intercept(self, reduced_den_roots):
-          for r in reduced_den_roots:
-               if np.isclose(r, 0):
+     def calculate_y_intercept(self):
+          for d in self.discontinuities:
+               if np.isclose(d, 0):
                     return None
-          return self.curve_evaluator(0)
+          return self.function_evaluator(0)
 
-     def calculate_roots(self):
-          return sp.solve(self.rational_expression, x)
+     def calculate_roots(self, show_complex_roots=False):
+          roots = sp.solve(self.rational_expression, x)
+          if show_complex_roots:
+               return roots
+          real_roots =[]
+          for r in roots:
+               if r.is_real:
+                    real_roots.append(r)
+          return real_roots
+          
      
      #TODO: include logic for handling when stationary/inflection points are "nice" i.e integers or rationals so they can be listed "nicely"
      def _calculate_nth_der_stationary_points(self, nth_der_expression, decimal_places = None):
@@ -49,20 +55,22 @@ class RationalFunction():
           num_stat_points = 0
           for p in sp.solve(nth_der_expression, x):
                print(p)
-               p_eval = p.evalf(decimal_places)
+               p_eval = p.evalf()
                if np.isclose(float(sp.im(p_eval)), 0):
-                    stat_points.append((sp.re(p_eval), sp.re(self.function_evaluator(p_eval))))
+                    stat_points.append((round(sp.re(p_eval), decimal_places), round(sp.re(self.function_evaluator(p_eval)), decimal_places)))
                     num_stat_points+=1
           return [stat_points, num_stat_points]
 
-     def calculate_stationary_points(self, decimal_places = None):
+     def calculate_stationary_points(self, decimal_places = 3):
           stat_points, num_stat_points = self._calculate_nth_der_stationary_points(self.der_expression, decimal_places)
           print("There are " + str(num_stat_points) + " stationary points")
+          print("Stationary points are: ", stat_points)
           return stat_points
      
-     def calculate_inflection_points(self, decimal_places = None):
+     def calculate_inflection_points(self, decimal_places = 3):
           inflec_points, num_inflec_points = self._calculate_nth_der_stationary_points(self.second_der_expression, decimal_places)
           print("There are " + str(num_inflec_points) + " inflection points")
+          print("Inflection points are: ", inflec_points)
           return inflec_points
      
      def calculate_derivative_coefficients(self, num_coeffs, den_coeffs):

@@ -3,7 +3,6 @@ import PySimpleGUI as sg
 
 #TODO: (GENERAL) format section, give access to analytics about curve
 #TODO: (MAYBE) have each section be collapsible to tailor which information is visible if user wants to practice calculating specific analytics
-#TODO: Have frames be visible depending on if they are populated with data 
 #TODO: Split asymptote frame into horizontal, vertical, oblique and curvilinear asymptotes
 
 def Collapsible(layout, key, title='', arrows=(sg.SYMBOL_DOWN, sg.SYMBOL_RIGHT), collapsed=False):
@@ -13,9 +12,9 @@ def Collapsible(layout, key, title='', arrows=(sg.SYMBOL_DOWN, sg.SYMBOL_RIGHT),
 
 def format_analytics_layout():
     return [[sg.Frame('Roots', layout =[[sg.T('', key = ROOTS_KEY)]])],
-                    [sg.Frame('y-intercepts', layout =[[sg.T('')]])],
-                    [sg.Frame('Stationary points', layout =[[sg.T('')]])],
-                    [sg.Frame('Inflection points', layout =[[sg.T('')]])],
+                    [sg.Frame('y-intercepts', layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
+                    [sg.Frame('Stationary points', layout =[[sg.T('', key = STAT_POINTS_KEY)]])],
+                    [sg.Frame('Inflection points', layout =[[sg.T('', key = INFLEC_POINTS_KEY)]])],
                     [sg.Frame('Asymptotes', layout =[[sg.T('')]])]
                 ]
 

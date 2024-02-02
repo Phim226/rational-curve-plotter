@@ -12,9 +12,8 @@ def build_main_window():
     graph = build_graph_section()
     analytics = build_analytics_section()
     layout = [[sg.Column([
-                [options, curve_label], 
+                [options, sg.vtop(curve_label)], 
                 [graph_control], 
-                [graph]], pad = (0,0)), 
-              sg.VSeperator(),
-              sg.vtop(analytics)]]
+                [sg.vtop(analytics), graph]], pad = (0,0)),
+              ]]
     return sg.Window('Rational curve plotter', layout, resizable=True)

@@ -23,5 +23,3 @@ def initialise_curve_objects(values):
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
-    print("stationary points are: ", rational_function.calculate_stationary_points())
-    print("inflection points are: ", rational_function.calculate_inflection_points())
