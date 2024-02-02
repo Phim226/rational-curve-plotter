@@ -1,6 +1,7 @@
 from main_window.element_keys import *
 import curve.curve_objects_initialiser as coi
 
+#TODO: improve formatting of roots, stationary points and inflection points (currently the raw list is displayed)
 #TODO: include option for user to choose decimal precision of numbers
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
 #TODO: Display derivative function (with formatting options)

@@ -3,6 +3,10 @@ from main_window.element_tips import *
 import PySimpleGUI as sg
 
 #TODO: include options for manually inputting coefficients
+#TODO: add option to plot interesting points (roots, y intercept, stationary, inflection)
+#TODO: add option to plot derivative alongside regular curve
+#TODO: add option for manually inputting roots 
+#TODO: add option to randomly generate the roots instead of the coefficients (include tip saying this is recommended for 'easier' practice since roots can then be guessed since they are guaranteed to be integer)
 def build_options_section():
     return sg.Frame('Curve Options', 
                             layout = [
