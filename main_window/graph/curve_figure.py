@@ -49,5 +49,5 @@ def update_graph_section(values, window):
     build_curve_figure(values)
     fig = plt.gcf()
     DPI = fig.get_dpi()
-    fig.set_size_inches(404 * 2 / float(DPI), 404 / float(DPI))
+    fig.set_size_inches(375 * 2 / float(DPI), 375 / float(DPI))
     draw_figure_w_toolbar(window[FIGURE_KEY].TKCanvas, fig, window[TOOLBAR_KEY].TKCanvas)

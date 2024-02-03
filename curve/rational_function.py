@@ -61,13 +61,13 @@ class RationalFunction():
                     num_stat_points+=1
           return [stat_points, num_stat_points]
 
-     def calculate_stationary_points(self, decimal_places = 3):
+     def calculate_stationary_points(self, decimal_places = 2):
           stat_points, num_stat_points = self._calculate_nth_der_stationary_points(self.der_expression, decimal_places)
           print("There are " + str(num_stat_points) + " stationary points")
           print("Stationary points are: ", stat_points)
           return stat_points
      
-     def calculate_inflection_points(self, decimal_places = 3):
+     def calculate_inflection_points(self, decimal_places = 2):
           inflec_points, num_inflec_points = self._calculate_nth_der_stationary_points(self.second_der_expression, decimal_places)
           print("There are " + str(num_inflec_points) + " inflection points")
           print("Inflection points are: ", inflec_points)
