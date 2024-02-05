@@ -64,8 +64,9 @@ def plot_asymptotes():
         plt.axhline(num_coeffs[0]/den_coeffs[0], c = "red", ls = "dashed")
     elif num_degree>den_degree:
         quotient = np.polydiv(num_coeffs, den_coeffs)[0]
+        print(quotient)
         A = lambda X : np.polyval(quotient, X)
-        if den_degree==1:
+        if num_degree - den_degree==1:
             X = np.linspace(x_lims[0], x_lims[1], 2)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
         else:
