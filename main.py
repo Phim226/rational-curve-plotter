@@ -42,7 +42,7 @@ def handle_event(window, values, event):
     elif event is FORCE_DEN_DEG_KEY:
         window[DEN_DEG_SPIN_KEY].update(disabled=not values[FORCE_DEN_DEG_KEY])
     elif event is PLOT_ASYMP_KEY:
-        window[CURV_ASYMP_KEY].update(disabled=not values[PLOT_ASYMP_KEY])
+        window[PLOT_CURV_ASYMP_KEY].update(disabled=not values[PLOT_ASYMP_KEY])
     elif event is SHOW_KEY:
         window[TOOLBAR_KEY].update(visible = True)
         window[FIGURE_KEY].update(visible = True)

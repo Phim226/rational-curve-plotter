@@ -53,7 +53,7 @@ def _adjust_xaxis():
             x_lims_init[1] = max(discontinuities)+5
         plt.xlim((x_lims_init[0],x_lims_init[1]))
 
-def plot_asymptotes():
+def plot_asymptotes(plot_curv_asymps):
     num_coeffs, num_degree = numerator.coefficients, numerator.degree
     den_coeffs, den_degree = denominator.coefficients, denominator.degree
     for z in discontinuities:
@@ -69,7 +69,7 @@ def plot_asymptotes():
         if num_degree - den_degree==1:
             X = np.linspace(x_lims[0], x_lims[1], 2)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
-        else:
+        elif plot_curv_asymps:
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
 

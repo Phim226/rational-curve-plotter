@@ -33,8 +33,9 @@ def build_curve_figure(values):
     adjust_axes()
     cplot.define_global_variables()
     plot_asmyptotes = values[PLOT_ASYMP_KEY]
+    print("Is include curvilinear asymptotes button clicked? ", values[PLOT_CURV_ASYMP_KEY])
     if plot_asmyptotes and not coi.rational_function.reduces_to_constant:
-        cplot.plot_asymptotes()
+        cplot.plot_asymptotes(values[PLOT_CURV_ASYMP_KEY])
     cplot.plot_curve()
     plt.grid()
     plt.legend(loc='upper left')
