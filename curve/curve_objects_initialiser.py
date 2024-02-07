@@ -18,8 +18,8 @@ def initialise_curve_objects(values):
     else:
         numerator, denominator = initialise_random_polynomials()
     #change these coefficients to manually assign coefficients for debugging
-    numerator = RandPolynomial(forced_degree = 3, coefficients=None)
-    denominator = RandPolynomial(forced_degree= 1, coefficients=None)
+    #numerator = RandPolynomial(forced_degree = 3, coefficients=None)
+    #denominator = RandPolynomial(forced_degree= 1, coefficients=None)
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
