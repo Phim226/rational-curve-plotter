@@ -5,7 +5,7 @@ from main_window.element_keys import *
 def _initialise_random_polynomials(num_degree = None, den_degree = None):
     return [RandPolynomial(num_degree), RandPolynomial(den_degree)]
 
-def initialise_curve_objects(values):
+def initialise_curve_objects(values) -> None:
     global numerator, denominator, rational_function
     force_num_degree, force_den_degree = values[FORCE_NUM_DEG_KEY], values[FORCE_DEN_DEG_KEY]
     forced_num_degree, forced_den_degree = values[NUM_DEG_SPIN_KEY], values[DEN_DEG_SPIN_KEY]
