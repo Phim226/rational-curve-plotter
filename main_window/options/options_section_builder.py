@@ -8,7 +8,7 @@ import PySimpleGUI as sg
 #TODO: add option for manually inputting roots 
 #TODO: add option to randomly generate the roots instead of the coefficients (include tip saying this is recommended for 'easier' practice since roots can then be guessed since they are guaranteed to be integer)
 def build_options_section():
-    return sg.Frame('Curve Options', 
+    return sg.Frame('Options', 
                             layout = [
                                 [sg.Checkbox('Randomly generate curve', default = True, enable_events=True, key=RANDOM_GEN_KEY, tooltip = RAND_GEN_TIP)],
                                 [sg.T('Numerator degree:'), 
