@@ -16,4 +16,4 @@ def build_main_window():
                 [graph_control], 
                 [sg.vtop(analytics), graph]], pad = (0,0)),
               ]]
-    return sg.Window('Rational curve plotter', layout, resizable=True)
+    return sg.Window('Rational curve plotter', layout, resizable=True).Finalize()
