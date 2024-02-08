@@ -1,6 +1,7 @@
 from curve.random_polynomial import RandPolynomial
 from curve.rational_function import RationalFunction
 from main_window.element_keys import *
+import sympy as sp
 
 def _initialise_random_polynomials(num_degree = None, den_degree = None):
     return [RandPolynomial(num_degree), RandPolynomial(den_degree)]
@@ -18,8 +19,8 @@ def initialise_curve_objects(values) -> None:
     else:
         numerator, denominator = _initialise_random_polynomials()
     #change these coefficients to manually assign coefficients for debugging
-    #numerator = RandPolynomial(forced_degree = 3, coefficients=None)
-    #denominator = RandPolynomial(forced_degree= 1, coefficients=None)
+    #numerator = RandPolynomial(forced_degree = None, coefficients=[10, 3, -3])
+    #denominator = RandPolynomial(forced_degree= None, coefficients=[-9,5,-5])
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
