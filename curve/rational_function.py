@@ -61,10 +61,7 @@ class RationalFunction():
           return False
 
      def calc_and_classify_stationary_points(self, decimal_places=None):
-          self.inflection_x_val = []
-          inflections = []
-          minima = []
-          maxima = []
+          self.inflection_x_val, inflections, minima, maxima = [], [], [], []
           num_stat_points=0
           solutions = sp.solve(self.der_expression, x)
           print("First derivative solutions", solutions)
