@@ -43,17 +43,22 @@ def handle_event(window, values, event):
         window[DEN_DEG_SPIN_KEY].update(disabled=not values[FORCE_DEN_DEG_KEY])
     elif event is PLOT_ASYMP_KEY:
         window[PLOT_CURV_ASYMP_KEY].update(disabled=not values[PLOT_ASYMP_KEY])
-    elif event is SHOW_KEY:
+    elif event is SHOW_GRAPH_KEY:
         window[TOOLBAR_KEY].update(visible = True)
         window[FIGURE_KEY].update(visible = True)
-    elif event is HIDE_KEY:
+    elif event is HIDE_GRAPH_KEY:
         window[TOOLBAR_KEY].update(visible = False)
         window[FIGURE_KEY].update(visible = False)
+    elif event is SHOW_ANALYTICS_KEY:
+        window[ANALYTIC_SEC_KEY].update(visible = True)
+    elif event is HIDE_ANALYTICS_KEY:
+        window[ANALYTIC_SEC_KEY].update(visible = False)
 
 
 
 def main():
     window = build_main_window()
+    window.Maximize()
     while True:
         event, values = window.read()
         window.bring_to_front
