@@ -12,9 +12,19 @@ def Collapsible(layout, key, title='', arrows=(sg.SYMBOL_DOWN, sg.SYMBOL_RIGHT),
 
 def format_analytics_layout():
     return [[sg.Frame('Roots', layout =[[sg.T('', key = ROOTS_KEY)]])],
+                    [sg.Frame('Derivative', layout =[
+                        [sg.Canvas(key = DERIVATIVE_LABEL_KEY, visible = True, size=(50, 50))],
+                        [sg.Column([[sg.T('Minima:', font = ('Helvetica', 9,'bold'))],
+                                   [sg.T('', key = MINIMA_KEY)],
+                                   [sg.T('Maxima:', font = ('Helvetica', 9,'bold'))],
+                                   [sg.T('', key = MAXIMA_KEY)]]),
+                         sg.VerticalSeparator(pad = (0, 10)),
+                         sg.Column([[sg.T('Stationary inflection points:', font = ('Helvetica', 9,'bold'))],
+                                   [sg.T('', key = STAT_INFLEC_POINTS_KEY)],
+                                   [sg.T('Non-stationary inflection points:', font = ('Helvetica', 9,'bold'))],
+                                   [sg.T('', key = NON_STAT_INFLEC_POINTS_KEY)]])]
+                    ])],
                     [sg.Frame('y-intercepts', layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
-                    [sg.Frame('Stationary points', layout =[[sg.T('', key = STAT_POINTS_KEY)]])],
-                    [sg.Frame('Inflection points', layout =[[sg.T('', key = INFLEC_POINTS_KEY)]])],
                     [sg.Frame('Asymptotes', layout =[[sg.T('')]])]
                 ]
 
