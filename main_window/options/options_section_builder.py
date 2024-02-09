@@ -9,13 +9,15 @@ def _format_random_options():
          sg.Checkbox('Random roots', default = False, enable_events=True, key = RANDOM_ROOTS_KEY)],
         [sg.Column(layout =[
             [sg.T('Numerator', key = RANDOM_NUM_TITLE_KEY, font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', key = RANDOM_NUM_DEG_TEXT_KEY), sg.Spin([i for i in range(0,3)], initial_value=0, key=RANDOM_NUM_DEG_SPIN_KEY)],
+            [sg.T('Degree', key = RANDOM_NUM_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
+             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_NUM_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_NUM_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ]),
          sg.VerticalSeparator(),
          sg.Column(layout =[
             [sg.T('Denominator', key = RANDOM_DEN_TITLE_KEY, font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', key = RANDOM_DEN_DEG_TEXT_KEY), sg.Spin([i for i in range(0,3)], initial_value=0, key=RANDOM_DEN_DEG_SPIN_KEY)],
+            [sg.T('Degree', key = RANDOM_DEN_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
+             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_DEN_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_DEN_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ])]
     ])
@@ -27,12 +29,14 @@ def _format_manual_options():
          sg.Checkbox('Input roots', default = False, disabled = True, enable_events=True, key = MANUAL_ROOTS_KEY)],
         [sg.Column(layout =[
             [sg.T('Numerator', key = MANUAL_NUM_TITLE_KEY, text_color = 'grey', font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', text_color = 'grey', key = MANUAL_NUM_DEG_TEXT_KEY), sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_NUM_DEG_SPIN_KEY)]
+            [sg.T('Degree', text_color = 'grey', key = MANUAL_NUM_DEG_TEXT_KEY), 
+             sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_NUM_DEG_SPIN_KEY)]
          ]),
          sg.VerticalSeparator(),
          sg.Column(layout =[
             [sg.T('Denominator', key = MANUAL_DEN_TITLE_KEY, text_color = 'grey', font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', text_color = 'grey', key = MANUAL_DEN_DEG_TEXT_KEY), sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_DEN_DEG_SPIN_KEY)]
+            [sg.T('Degree', text_color = 'grey', key = MANUAL_DEN_DEG_TEXT_KEY), 
+             sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_DEN_DEG_SPIN_KEY)]
          ])],
          [sg.B('Input values', disabled = True, key=INPUT_VALUES_KEY)]
     ])
