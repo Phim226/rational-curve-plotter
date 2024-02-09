@@ -57,8 +57,8 @@ def update_analytics_section(window):
     _update_stationary_points_info(window)
     _update_non_stat_inflection_points_info(window)
 
-def switch_analytics_section(window, reveal):
-    window[ROOTS_FRAME_KEY].update(visible = reveal)
-    window[DERIVATIVE_FRAME_KEY].update(visible = reveal)
-    window[Y_INTERCEPT_FRAME_KEY].update(visible = reveal)
-    window[ASYMPTOTES_FRAME_KEY].update(visible = reveal)
+def update_analytics_section_visiblity(window, visible):
+    window[ROOTS_FRAME_KEY].update(visible = visible)
+    window[DERIVATIVE_FRAME_KEY].update(visible = visible)
+    window[Y_INTERCEPT_FRAME_KEY].update(visible = visible)
+    window[ASYMPTOTES_FRAME_KEY].update(visible = visible)

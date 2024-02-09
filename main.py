@@ -1,10 +1,10 @@
 from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section
 from main_window.curve_label_display.curve_label_figure import update_curve_label
-from main_window.analytics.analytics_controller import update_analytics_section, switch_analytics_section
-from main_window.graph.graph_control_section_builder import update_progress_message
-from curve.curve_objects_initialiser import initialise_curve_objects
+from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
 from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button
+from main_window.graph.graph_section_controller import update_generate_button, update_progress_message, update_visibility_of_graph_section
+from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.element_keys import *
 import PySimpleGUI as sg
 
@@ -14,7 +14,7 @@ import PySimpleGUI as sg
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
 def _handle_event(window, values, event) -> None:
     if event is GEN_KEY:
-        window[GEN_KEY].update(disabled=True)
+        update_generate_button(window, disabled = True)
         window.refresh()
         initialise_curve_objects(values)
         update_progress_message(window, 'Generating and plotting next graph...')
@@ -23,26 +23,24 @@ def _handle_event(window, values, event) -> None:
         update_curve_label(window)
         update_progress_message(window, 'Updating analytics...')
         update_analytics_section(window)
-        update_progress_message(window, vis_bool = False)
+        update_progress_message(window, visible = False)
         window.refresh()
-        window[GEN_KEY].update(disabled=False)
+        update_generate_button(window, disabled = False)
     elif event in (RANDOM_GEN_KEY, MANUAL_GEN_KEY):
         switch_random_and_manual_options(window, values, event)
     elif event is PLOT_ASYMP_KEY:
         switch_curvilinear_asymptote_button(window, values)
     elif event is SHOW_GRAPH_KEY:
-        window[TOOLBAR_KEY].update(visible = True)
-        window[FIGURE_KEY].update(visible = True)
+        update_visibility_of_graph_section(window, visible = True)
     elif event is HIDE_GRAPH_KEY:
-        window[TOOLBAR_KEY].update(visible = False)
-        window[FIGURE_KEY].update(visible = False)
+        update_visibility_of_graph_section(window, visible = False)
     elif event is SHOW_ANALYTICS_KEY:
-        switch_analytics_section(window, reveal = True)
+        update_analytics_section_visiblity(window, visible = True)
     elif event is HIDE_ANALYTICS_KEY:
-        switch_analytics_section(window, reveal = False)
+        update_analytics_section_visiblity(window, visible = False)
 
 def _perform_startup_processes(window):
-    switch_analytics_section(window, reveal = False)
+    update_analytics_section_visiblity(window, visible = False)
 
 def main() -> None:
     window = build_main_window()
