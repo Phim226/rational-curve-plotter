@@ -4,13 +4,15 @@ from main_window.curve_label_display.curve_label_figure import update_curve_labe
 from main_window.analytics.analytics_section import update_analytics_section
 from main_window.graph.graph_control_section_builder import update_progress_message
 from curve.curve_objects_initialiser import initialise_curve_objects
+from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button
 from main_window.element_keys import *
 import PySimpleGUI as sg
+
 
 #TODO: implement logging
 #TODO: add event where if update graph button is pressed then the same graph is plotted again with current window values
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
-def handle_event(window, values, event):
+def handle_event(window, values, event) -> None:
     if event is GEN_KEY:
         window[GEN_KEY].update(disabled=True)
         window.refresh()
@@ -24,25 +26,10 @@ def handle_event(window, values, event):
         update_progress_message(window, vis_bool = False)
         window.refresh()
         window[GEN_KEY].update(disabled=False)
-    elif event.startswith(ANALYTIC_SEC_KEY):
-        window[ANALYTIC_SEC_KEY].update(visible=not window[ANALYTIC_SEC_KEY].visible) 
-        window[ANALYTIC_SEC_KEY+'BUTTON'].update(window[ANALYTIC_SEC_KEY].metadata[0] if window[ANALYTIC_SEC_KEY].visible else window[ANALYTIC_SEC_KEY].metadata[1]) #changes which arrow is visible depending on whether the analytics section has just been opened or closed (metadata holds the arrow symbols here)
-    elif event is RANDOM_GEN_KEY:
-        window[FORCE_NUM_DEG_KEY].update(disabled=not values[RANDOM_GEN_KEY])
-        window[FORCE_DEN_DEG_KEY].update(disabled=not values[RANDOM_GEN_KEY])
-        window[NUM_DEG_SPIN_KEY].update(disabled=False)
-        window[DEN_DEG_SPIN_KEY].update(disabled=False)
-        if values[RANDOM_GEN_KEY]:
-            if not values[FORCE_NUM_DEG_KEY]:
-                window[NUM_DEG_SPIN_KEY].update(disabled=True)
-            if not values[FORCE_DEN_DEG_KEY]:
-                window[DEN_DEG_SPIN_KEY].update(disabled=True)
-    elif event is FORCE_NUM_DEG_KEY:
-        window[NUM_DEG_SPIN_KEY].update(disabled=not values[FORCE_NUM_DEG_KEY])
-    elif event is FORCE_DEN_DEG_KEY:
-        window[DEN_DEG_SPIN_KEY].update(disabled=not values[FORCE_DEN_DEG_KEY])
+    elif event in (RANDOM_GEN_KEY, MANUAL_GEN_KEY):
+        switch_random_and_manual_options(window, values, event)
     elif event is PLOT_ASYMP_KEY:
-        window[PLOT_CURV_ASYMP_KEY].update(disabled=not values[PLOT_ASYMP_KEY])
+        switch_curvilinear_asymptote_button(window, values)
     elif event is SHOW_GRAPH_KEY:
         window[TOOLBAR_KEY].update(visible = True)
         window[FIGURE_KEY].update(visible = True)
@@ -56,7 +43,7 @@ def handle_event(window, values, event):
 
 
 
-def main():
+def main() -> None:
     window = build_main_window()
     window.Maximize()
     while True:
