@@ -12,7 +12,7 @@ import PySimpleGUI as sg
 #TODO: implement logging
 #TODO: add event where if update graph button is pressed then the same graph is plotted again with current window values
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
-def handle_event(window, values, event) -> None:
+def _handle_event(window, values, event) -> None:
     if event is GEN_KEY:
         window[GEN_KEY].update(disabled=True)
         window.refresh()
@@ -41,11 +41,13 @@ def handle_event(window, values, event) -> None:
     elif event is HIDE_ANALYTICS_KEY:
         switch_analytics_section(window, reveal = False)
 
-
+def _perform_startup_processes(window):
+    switch_analytics_section(window, reveal = False)
 
 def main() -> None:
     window = build_main_window()
     window.Maximize()
+    _perform_startup_processes(window)
     while True:
         event, values = window.read()
         window.bring_to_front
@@ -53,7 +55,7 @@ def main() -> None:
         if event in (sg.WIN_CLOSED, EXIT_KEY):
             break
         else:
-            handle_event(window, values, event)
+            _handle_event(window, values, event)
     window.close()
 
 
