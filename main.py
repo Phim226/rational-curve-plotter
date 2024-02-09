@@ -2,7 +2,7 @@ from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section
 from main_window.curve_label_display.curve_label_figure import update_curve_label
 from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
-from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button
+from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots
 from main_window.graph.graph_section_controller import update_generate_button, update_progress_message, update_visibility_of_graph_section
 from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.element_keys import *
@@ -38,6 +38,10 @@ def _handle_event(window, values, event) -> None:
         update_analytics_section_visiblity(window, visible = True)
     elif event is HIDE_ANALYTICS_KEY:
         update_analytics_section_visiblity(window, visible = False)
+    elif event is RANDOM_COEFFICIENTS_KEY:
+        switch_rand_roots(window, values)
+    elif event is RANDOM_ROOTS_KEY:
+        switch_rand_coeffs(window, values)
 
 def _perform_startup_processes(window):
     update_analytics_section_visiblity(window, visible = False)
