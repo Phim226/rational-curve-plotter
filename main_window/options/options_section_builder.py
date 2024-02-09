@@ -2,6 +2,8 @@ from main_window.element_keys import *
 from main_window.element_tips import *
 import PySimpleGUI as sg
 
+disabled_colour = 'grey42'
+
 def _format_random_options():
     return sg.Column([
         [sg.Checkbox('Randomly generate curve', default = True, enable_events=True, key=RANDOM_GEN_KEY, tooltip = RAND_GEN_TIP)],
@@ -28,14 +30,14 @@ def _format_manual_options():
         [sg.Checkbox('Input coefficients', default = True, disabled = True, enable_events=True, key = MANUAL_COEFFICIENTS_KEY),
          sg.Checkbox('Input roots', default = False, disabled = True, enable_events=True, key = MANUAL_ROOTS_KEY)],
         [sg.Column(layout =[
-            [sg.T('Numerator', key = MANUAL_NUM_TITLE_KEY, text_color = 'grey', font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', text_color = 'grey', key = MANUAL_NUM_DEG_TEXT_KEY), 
+            [sg.T('Numerator', key = MANUAL_NUM_TITLE_KEY, text_color = disabled_colour, font = 'Helvetica 9 bold underline')],
+            [sg.T('Degree', text_color = disabled_colour, key = MANUAL_NUM_DEG_TEXT_KEY), 
              sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_NUM_DEG_SPIN_KEY)]
          ]),
          sg.VerticalSeparator(),
          sg.Column(layout =[
-            [sg.T('Denominator', key = MANUAL_DEN_TITLE_KEY, text_color = 'grey', font = 'Helvetica 9 bold underline')],
-            [sg.T('Degree', text_color = 'grey', key = MANUAL_DEN_DEG_TEXT_KEY), 
+            [sg.T('Denominator', key = MANUAL_DEN_TITLE_KEY, text_color = disabled_colour, font = 'Helvetica 9 bold underline')],
+            [sg.T('Degree', text_color = disabled_colour, key = MANUAL_DEN_DEG_TEXT_KEY), 
              sg.Spin([i for i in range(0,3)], disabled = True, initial_value=0, key=MANUAL_DEN_DEG_SPIN_KEY)]
          ])],
          [sg.B('Input values', disabled = True, key=INPUT_VALUES_KEY)]

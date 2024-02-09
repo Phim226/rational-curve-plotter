@@ -1,26 +1,28 @@
 from main_window.element_keys import *
 
+disabled_colour = 'grey42'
+
 def _switch_random_options(window, value) -> None:
     window[RANDOM_COEFFICIENTS_KEY].update(disabled = value)
     window[RANDOM_ROOTS_KEY].update(disabled = value)
-    window[RANDOM_NUM_TITLE_KEY].update(text_color = 'grey' if value else 'white')
+    window[RANDOM_NUM_TITLE_KEY].update(text_color = disabled_colour if value else 'white')
     window[RANDOM_NUM_DEG_SPIN_KEY].update(disabled = value)
-    window[RANDOM_NUM_DEG_TEXT_KEY].update(text_color = 'grey' if value else 'white')
+    window[RANDOM_NUM_DEG_TEXT_KEY].update(text_color = disabled_colour if value else 'white')
     window[RANDOM_FORCE_NUM_DEG_KEY].update(disabled = value)
-    window[RANDOM_DEN_TITLE_KEY].update(text_color = 'grey' if value else 'white')
+    window[RANDOM_DEN_TITLE_KEY].update(text_color = disabled_colour if value else 'white')
     window[RANDOM_DEN_DEG_SPIN_KEY].update(disabled = value)
-    window[RANDOM_DEN_DEG_TEXT_KEY].update(text_color = 'grey' if value else 'white')
+    window[RANDOM_DEN_DEG_TEXT_KEY].update(text_color = disabled_colour if value else 'white')
     window[RANDOM_FORCE_DEN_DEG_KEY].update(disabled = value)
 
 def _switch_manual_options(window, value) -> None:
     window[MANUAL_COEFFICIENTS_KEY].update(disabled = value)
     window[MANUAL_ROOTS_KEY].update(disabled = value)
-    window[MANUAL_NUM_TITLE_KEY].update(text_color = 'grey' if value else 'white')
+    window[MANUAL_NUM_TITLE_KEY].update(text_color = disabled_colour if value else 'white')
     window[MANUAL_NUM_DEG_SPIN_KEY].update(disabled = value)
-    window[MANUAL_NUM_DEG_TEXT_KEY].update(text_color = 'grey' if value else 'white')
-    window[MANUAL_DEN_TITLE_KEY].update(text_color = 'grey' if value else 'white')
+    window[MANUAL_NUM_DEG_TEXT_KEY].update(text_color = disabled_colour if value else 'white')
+    window[MANUAL_DEN_TITLE_KEY].update(text_color = disabled_colour if value else 'white')
     window[MANUAL_DEN_DEG_SPIN_KEY].update(disabled = value)
-    window[MANUAL_DEN_DEG_TEXT_KEY].update(text_color = 'grey' if value else 'white')
+    window[MANUAL_DEN_DEG_TEXT_KEY].update(text_color = disabled_colour if value else 'white')
     window[INPUT_VALUES_KEY].update(disabled = value)
 
 '''
