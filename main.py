@@ -1,7 +1,7 @@
 from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section
 from main_window.curve_label_display.curve_label_figure import update_curve_label
-from main_window.analytics.analytics_controller import update_analytics_section
+from main_window.analytics.analytics_controller import update_analytics_section, switch_analytics_section
 from main_window.graph.graph_control_section_builder import update_progress_message
 from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button
@@ -37,9 +37,9 @@ def handle_event(window, values, event) -> None:
         window[TOOLBAR_KEY].update(visible = False)
         window[FIGURE_KEY].update(visible = False)
     elif event is SHOW_ANALYTICS_KEY:
-        window[ANALYTIC_SEC_KEY].update(visible = True)
+        switch_analytics_section(window, reveal = True)
     elif event is HIDE_ANALYTICS_KEY:
-        window[ANALYTIC_SEC_KEY].update(visible = False)
+        switch_analytics_section(window, reveal = False)
 
 
 

@@ -10,8 +10,8 @@ def Collapsible(layout, key, title='', arrows=(sg.SYMBOL_DOWN, sg.SYMBOL_RIGHT),
                       [sg.pin(sg.Column(layout, key=key, visible=not collapsed, metadata=arrows))]], pad=(0,0))
 
 def format_analytics_layout():
-    return [[sg.Frame('Roots', layout =[[sg.T('', key = ROOTS_KEY)]])],
-                    [sg.Frame('Derivative', layout =[
+    return [[sg.Frame('Roots', visible = False,  key = ROOTS_FRAME_KEY, layout =[[sg.T('', key = ROOTS_KEY)]])],
+                    [sg.Frame('Derivative', visible = False, key = DERIVATIVE_FRAME_KEY, layout =[
                         [sg.Canvas(key = DERIVATIVE_LABEL_KEY, visible = True, size=(50, 50))],
                         [sg.Column([[sg.T('Minima:', font = 'Helvetica 9 underline bold')],
                                    [sg.T('', key = MINIMA_KEY)],
@@ -23,8 +23,8 @@ def format_analytics_layout():
                                    [sg.T('Non-stationary inflection points:', font = 'Helvetica 9 underline bold')],
                                    [sg.T('', key = NON_STAT_INFLEC_POINTS_KEY)]])]
                     ])],
-                    [sg.Frame('y-intercepts', layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
-                    [sg.Frame('Asymptotes', layout =[[sg.T('')]])]
+                    [sg.Frame('y-intercepts', visible = False, key = Y_INTERCEPT_FRAME_KEY, layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
+                    [sg.Frame('Asymptotes', visible = False, key = ASYMPTOTES_FRAME_KEY, layout =[[sg.T('')]])]
                 ]
 
 def build_analytics_section():
