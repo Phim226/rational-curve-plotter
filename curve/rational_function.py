@@ -64,9 +64,8 @@ class RationalFunction():
           self.inflection_x_val, inflections, minima, maxima = [], [], [], []
           num_stat_points=0
           solutions = sp.solve(self.der_expression, x)
-          print("First derivative solutions", solutions)
           for p in solutions:
-               if np.isclose(float(sp.im(p)), 0):
+               if np.isclose(float(sp.im(p.evalf())), 0):
                     value_is_nice = self._is_value_nice(p)
                     second_der_p_value = float(sp.re(self.second_der_evaluator(p)))
                     if np.isclose(second_der_p_value, 0):
@@ -86,9 +85,8 @@ class RationalFunction():
           inflection_points = []
           num_inflection_points = 0
           solutions = sp.solve(self.second_der_expression, x)
-          print("second derivative solutions: ", solutions)
           for p in solutions:
-               if np.isclose(float(sp.im(p)), 0) and not any(np.isclose(float(sp.re(p)), self.inflection_x_val)):
+               if np.isclose(float(sp.im(p.evalf())), 0) and not any(np.isclose(float(sp.re(p.evalf())), self.inflection_x_val)):
                     inflection_points.append(self._get_point_on_curve(p.evalf(), decimal_places))
                     num_inflection_points+=1
           print("There are " + str(num_inflection_points) + " non-stationary inflection points")
