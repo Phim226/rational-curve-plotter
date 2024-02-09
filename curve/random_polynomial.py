@@ -1,34 +1,30 @@
 import numpy as np
 import random as ran
 import sympy as sp
+from sympy.abc import x
 import curve.symbol_handler as sh
 
 class RandPolynomial():
 
-    x = sp.symbols('x')
-    max_degree = 2
-
-    def __init__(self, forced_degree=None, coefficients = [], real_roots = []):
-        self.coefficients = self.format_coeffs(coefficients) if coefficients else self.gen_rand_coeffs(forced_degree)
-        self.degree = forced_degree if forced_degree is not None else self.get_degree(self.coefficients)
+    def __init__(self, max_degree=2, force_degree=False, coefficients = [], real_roots = []):
+        self.max_degree = max_degree
+        self.coefficients = self.format_coeffs(coefficients) if coefficients else self.gen_rand_coeffs(force_degree)
+        self.degree = max_degree if force_degree else self.get_degree(self.coefficients)
         self.symbolic_expression = sh.build_poly_exp(self.coefficients, self.degree)
-        #self.symbolic_roots = self.get_symbolic_roots(self.symbolic_expression)
-        #self.real_roots = self.get_real_roots(self.symbolic_roots)
 
     
-    def gen_rand_coeffs(self, forced_degree):
-        if forced_degree is None:
-            range_upper_bound = self.max_degree + 1
-            coeffs = np.zeros(range_upper_bound)
-            while np.all(coeffs == 0):
-                    coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
-            return self.format_coeffs(coeffs.tolist())
-        else:
-            range_upper_bound = forced_degree+1
-            coeffs = np.zeros(range_upper_bound)
+    def gen_rand_coeffs(self, force_degree):
+        range_upper_bound = self.max_degree+1
+        coeffs = np.zeros(range_upper_bound)
+        if force_degree:
             while coeffs[0]==0:
                     coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
             return self.format_coeffs(coeffs.tolist())
+        else:
+            while np.all(coeffs == 0):
+                    coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
+            return self.format_coeffs(coeffs.tolist())
+            
     
     #removes leading zeros from coefficients list
     def format_coeffs(self, coeffs): 
@@ -42,7 +38,7 @@ class RandPolynomial():
         return len(coeffs)-1
     
     def get_symbolic_roots(self, symbolic_expression):
-        roots = sp.solve(symbolic_expression, self.x)
+        roots = sp.solve(symbolic_expression, x)
         print(roots)
         for r in roots:
              for i in r.atoms(sp.Pow):
