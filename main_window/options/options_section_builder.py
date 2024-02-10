@@ -10,7 +10,7 @@ def _format_random_options():
     return sg.Column([
         [sg.Checkbox('Randomly generate curve', default = True, enable_events=True, key=RANDOM_GEN_KEY)],
         [sg.Checkbox('Random coefficients', default = True, enable_events=True, key = RANDOM_COEFFICIENTS_KEY, tooltip = RAND_COEFFS_TIP),
-         sg.Checkbox('Random roots \n (non-functional)', default = False, enable_events=True, key = RANDOM_ROOTS_KEY, tooltip = RAND_ROOTS_TIP)],
+         sg.Checkbox('Random roots', default = False, enable_events=True, key = RANDOM_ROOTS_KEY, tooltip = RAND_ROOTS_TIP)],
         [sg.Column(layout =[
             [sg.T('Numerator', key = RANDOM_NUM_TITLE_KEY, font = 'Helvetica 9 bold underline')],
             [sg.T('Degree', key = RANDOM_NUM_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 

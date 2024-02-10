@@ -6,24 +6,51 @@ import curve.symbol_handler as sh
 
 class RandPolynomial():
 
-    def __init__(self, max_degree=2, force_degree=False, coefficients = [], real_roots = []):
+    def __init__(self, max_degree = 2, force_degree = False, random_coefficients = False, random_roots = False, coefficients = [], real_roots = []):
         self.max_degree = max_degree
-        self.coefficients = self.format_coeffs(coefficients) if coefficients else self.gen_rand_coeffs(force_degree)
+        if random_coefficients:
+            self.coefficients = self.gen_random_coeffs(force_degree)
+        elif coefficients:
+            self.coefficients = self.format_coeffs(coefficients)
+        elif random_roots:
+            self.real_roots = self.gen_random_roots(force_degree)
+            self.coefficients = sh.get_coeffs_from_roots(self.real_roots)
         self.degree = max_degree if force_degree else self.get_degree(self.coefficients)
-        self.symbolic_expression = sh.build_poly_exp(self.coefficients, self.degree)
+        self.symbolic_expression = sh.build_poly_exp_from_coeffs(self.coefficients, self.degree)
 
+    def gen_random_roots(self, force_degree):
+        all_roots = [r for r in range(-3, 4)]
+        roots = []
+        i = 0
+        if force_degree:
+            while i < self.max_degree:
+                index = ran.randint(0, len(all_roots)-1)
+                roots.append(all_roots[index])
+                i+=1
+            return roots
+        all_roots.append(None)
+        while not roots:
+            while i < self.max_degree:
+                index = ran.randint(0, len(all_roots)-1)
+                root = all_roots[index]
+                if root is None:
+                    i+=1 
+                    continue
+                roots.append(root)
+                i+=1
+        return roots          
+              
     
-    def gen_rand_coeffs(self, force_degree):
+    def gen_random_coeffs(self, force_degree):
         range_upper_bound = self.max_degree+1
         coeffs = np.zeros(range_upper_bound)
         if force_degree:
             while coeffs[0]==0:
                     coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
             return self.format_coeffs(coeffs.tolist())
-        else:
-            while np.all(coeffs == 0):
-                    coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
-            return self.format_coeffs(coeffs.tolist())
+        while np.all(coeffs == 0):
+                coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
+        return self.format_coeffs(coeffs.tolist())
             
     
     #removes leading zeros from coefficients list
