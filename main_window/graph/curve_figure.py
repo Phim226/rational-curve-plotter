@@ -1,4 +1,16 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib import backend_bases
+# mpl.rcParams['toolbar'] = 'None'
+backend_bases.NavigationToolbar2.toolitems = (
+    ('Home', 'Reset original view', 'home', 'home'),
+    ('Back', 'Back to  previous view', 'back', 'back'),
+    ('Forward', 'Forward to next view', 'forward', 'forward'),
+    (None, None, None, None),
+    ('Pan', 'Pan axes with left mouse, zoom with right', 'move', 'pan'),
+    ('Zoom', 'Zoom to rectangle', 'zoom_to_rect', 'zoom'),
+    ('Subplots', 'Configure subplots', 'subplots', 'configure_subplots'),
+    (None, None, None, None),
+  )
 from main_window.element_keys import *
 import curve.curve_objects_initialiser as coi
 import curve.curve_plotter as cplot

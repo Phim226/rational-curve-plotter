@@ -6,7 +6,7 @@ disabled_colour = 'grey42'
 
 MANUAL_DISABLED_ON_STARTUP = True
 
-def _format_random_options():
+def _build_random_options():
     return sg.Column([
         [sg.Checkbox('Randomly generate curve', default = True, enable_events=True, key=RANDOM_GEN_KEY)],
         [sg.Checkbox('Random coefficients', default = True, enable_events=True, key = RANDOM_COEFFICIENTS_KEY, tooltip = RAND_COEFFS_TIP),
@@ -26,7 +26,7 @@ def _format_random_options():
          ])]
     ])
 
-def _format_manual_options():
+def _build_manual_options():
     return sg.Column([
         [sg.Checkbox('Input curve parameters manually \n (all options non-functional)', default = False, enable_events=True, key=MANUAL_GEN_KEY)],
         [sg.Checkbox('Input coefficients', default = True, disabled = MANUAL_DISABLED_ON_STARTUP, enable_events=True, key = MANUAL_COEFFICIENTS_KEY),
@@ -45,11 +45,12 @@ def _format_manual_options():
          [sg.B('Input values', disabled = MANUAL_DISABLED_ON_STARTUP, key=INPUT_VALUES_KEY)]
     ])
 
-def _format_misc_options():
+def _build_misc_options():
     return sg.Column([
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
-         sg.Checkbox('Include curvilinear asymptotes', default=False, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
-        [sg.Checkbox('Always show next generated graph', default=True, key=SHOW_NEXT_GEN_KEY)]
+         sg.Checkbox('Include curvilinear asymptotes', default = False, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
+        [sg.Checkbox('Always show next generated graph', default = True, key=SHOW_NEXT_GEN_KEY, tooltip=SHOW_NEXT_GEN_TIP)],
+        [sg.Checkbox('Always show analytics', default = True, key=SHOW_NEXT_ANALYTICS_KEY, tooltip=SHOW_NEXT_ANALYTICS_TIP)]
     ])
 
 #TODO: include options for manually inputting coefficients
@@ -60,9 +61,9 @@ def _format_misc_options():
 def build_options_section():
     return sg.Frame('Curve Generation Options', 
                             layout = [
-                                 [_format_random_options(),
+                                 [_build_random_options(),
                                   sg.VerticalSeparator(),
-                                  _format_manual_options(),
+                                  _build_manual_options(),
                                   sg.VerticalSeparator(),
-                                  sg.vtop(_format_misc_options())]
+                                  sg.vtop(_build_misc_options())]
                             ])
