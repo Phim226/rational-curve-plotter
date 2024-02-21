@@ -21,7 +21,7 @@ class RationalFunction():
 
      def _find_discontinuities(self, numerator_expression, denominator_expression):
           inverted_rational_exp = denominator_expression/numerator_expression
-          poles = sp.solve(inverted_rational_exp, x)
+          poles = sp.solve(sp.simplify(inverted_rational_exp), x)
           discontinuities = []
           for r in poles:
                if r.is_real:
