@@ -10,18 +10,19 @@ class RationalFunction():
          self.numerator = numerator
          self.denominator = denominator
          self.rational_expression = numerator.symbolic_expression/denominator.symbolic_expression
+         self.rational_expression_simp = sp.simplify(self.rational_expression)
          self.der_expression = sp.diff(self.rational_expression, x)
          self.second_der_expression = sp.diff(self.der_expression, x)
-         self.function_latex = sh.format_rat_func_label(self.numerator, self.denominator)
          self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
          self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy")
          self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
-         self.discontinuities = self._find_discontinuities(numerator.symbolic_expression, denominator.symbolic_expression)
          self.reduces_to_constant = self.check_if_function_reduces_to_constant(self.rational_expression)
+         self.discontinuities = self._find_discontinuities(self.rational_expression_simp) if not self.reduces_to_constant else []
+         
 
-     def _find_discontinuities(self, numerator_expression, denominator_expression):
-          inverted_rational_exp = denominator_expression/numerator_expression
-          poles = sp.solve(sp.simplify(inverted_rational_exp), x)
+     def _find_discontinuities(self, rational_expression_simp):
+          inverted_rational_exp = 1/rational_expression_simp
+          poles = sp.solve(inverted_rational_exp, x)
           discontinuities = []
           for r in poles:
                if r.is_real:
@@ -87,7 +88,11 @@ class RationalFunction():
           solutions = sp.solve(self.second_der_expression, x)
           for p in solutions:
                if np.isclose(float(sp.im(p.evalf())), 0) and not any(np.isclose(float(sp.re(p.evalf())), self.inflection_x_val)):
-                    inflection_points.append(self._get_point_on_curve(p.evalf(), decimal_places))
+                    value_is_nice = self._is_value_nice(p)
+                    if value_is_nice:
+                         inflection_points.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
+                    else:
+                         inflection_points.append(self._get_point_on_curve(p.evalf(), decimal_places))
                     num_inflection_points+=1
           print("There are " + str(num_inflection_points) + " non-stationary inflection points")
           print("Non-stationary inflection points are: ", inflection_points)
@@ -97,6 +102,10 @@ class RationalFunction():
          der_num_coeffs = np.polysub(np.polymul(np.polyder(num_coeffs), den_coeffs), np.polymul(np.polyder(den_coeffs), num_coeffs))
          der_den_coeffs = np.polymul(den_coeffs, den_coeffs)
          return [der_num_coeffs, der_den_coeffs]
-
+     
+     def get_function_latex(self, latex_is_simplified):
+          if latex_is_simplified:
+               return sp.latex(self.rational_expression_simp)
+          return sp.latex(self.rational_expression)
     
 

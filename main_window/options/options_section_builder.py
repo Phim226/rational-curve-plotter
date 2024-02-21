@@ -49,7 +49,7 @@ def _build_misc_options():
     return sg.Column([
         [sg.Checkbox('Always show next generated graph', default = True, key=SHOW_NEXT_GEN_KEY, tooltip=SHOW_NEXT_GEN_TIP),
          sg.Checkbox('Always show analytics', default = True, key=SHOW_NEXT_ANALYTICS_KEY, tooltip=SHOW_NEXT_ANALYTICS_TIP)],
-        [sg.Checkbox('Simplify equation (nw)', default = False, key = SIMPLIFY_EQ_KEY)],
+        [sg.Checkbox('Simplify equation', default = False, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP)],
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
          sg.Checkbox('Include curvilinear asymptotes', default = False, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
         [sg.Checkbox('Plot derivate (nw)', default = False, key = PLOT_DERIVATIVE_KEY),

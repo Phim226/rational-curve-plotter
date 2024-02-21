@@ -79,7 +79,6 @@ def _plot_graph_section(x_min, x_max, eval, domains) -> None:
 
 def plot_curve() -> None:
     _adjust_xaxis()
-    curve_latex = rational_function.function_latex
     eval = rational_function.function_evaluator
     #Graph has to be split into various separate sections to account for vertical asymptotes
     domains = []

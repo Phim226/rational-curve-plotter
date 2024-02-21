@@ -20,7 +20,7 @@ def _handle_event(window, values, event) -> None:
         update_progress_message(window, 'Generating and plotting next graph...')
         update_graph_section(values, window)
         update_progress_message(window, 'Formatting curve label...')
-        update_curve_label(window)
+        update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         update_progress_message(window, 'Updating analytics...')
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
         update_analytics_section(window)

@@ -14,12 +14,6 @@ def build_poly_exp_from_roots(roots):
     exp = sp.expand(exp)
     return exp
 
-def format_rat_func_label(numerator, denominator):
-    numerator_exp = build_poly_exp_from_coeffs(numerator.coefficients, numerator.degree) 
-    denominator_exp = build_poly_exp_from_coeffs(denominator.coefficients, denominator.degree)
-    rat_func_exp = numerator_exp/denominator_exp
-    return sp.latex(rat_func_exp)
-
 def get_coeffs_from_roots(roots):
     exp = build_poly_exp_from_roots(roots)
     print(exp)
