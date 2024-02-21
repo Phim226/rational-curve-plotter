@@ -2,8 +2,9 @@ from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section, configure_toolbar_buttons
 from main_window.curve_label_display.curve_label_figure import update_curve_label
 from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
-from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots
-from main_window.graph.graph_section_controller import update_generate_button, update_progress_message, update_visibility_of_graph_section
+from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, 
+                                                    switch_rand_roots)
+from main_window.graph.graph_section_controller import update_controls, update_progress_message, update_visibility_of_graph_section
 from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.element_keys import *
 import PySimpleGUI as sg
@@ -14,8 +15,8 @@ import PySimpleGUI as sg
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
 def _handle_event(window, values, event) -> None:
     if event is GEN_KEY:
-        update_generate_button(window, disabled = True)
-        window.refresh()
+        update_controls(window, disabled = True)
+        window.refresh() #refreshing the window prevents click buffering on disabled buttons
         initialise_curve_objects(values)
         update_progress_message(window, 'Generating and plotting next graph...')
         update_graph_section(values, window)
@@ -26,7 +27,7 @@ def _handle_event(window, values, event) -> None:
         update_analytics_section(window)
         update_progress_message(window, 'Done!')
         window.refresh()
-        update_generate_button(window, disabled = False)
+        update_controls(window, disabled = False)
     elif event in (RANDOM_GEN_KEY, MANUAL_GEN_KEY):
         switch_random_and_manual_options(window, values, event)
     elif event is PLOT_ASYMP_KEY:
