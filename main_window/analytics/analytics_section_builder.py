@@ -6,7 +6,8 @@ STARTUP_VISIBILITY = True
 #TODO: Split asymptote frame into horizontal, vertical, oblique and curvilinear asymptotes
 
 def format_analytics_layout():
-    return [[sg.Frame('Roots', visible = STARTUP_VISIBILITY,  key = ROOTS_FRAME_KEY, layout =[[sg.T('', key = ROOTS_KEY)]])],
+    return [[sg.Frame('Roots', visible = STARTUP_VISIBILITY,  key = ROOTS_FRAME_KEY, layout =[[sg.T('', key = ROOTS_KEY)]]),
+             sg.Frame('y-intercepts', visible = STARTUP_VISIBILITY, key = Y_INTERCEPT_FRAME_KEY, layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
                     [sg.Frame('Derivative', visible = STARTUP_VISIBILITY, key = DERIVATIVE_FRAME_KEY, layout =[
                         [sg.Canvas(key = DERIVATIVE_LABEL_KEY, visible = True, size=(50, 50))],
                         [sg.Column([[sg.T('Minima:', font = 'Helvetica 9 underline bold')],
@@ -19,7 +20,6 @@ def format_analytics_layout():
                                    [sg.T('Non-stationary inflection points:', font = 'Helvetica 9 underline bold')],
                                    [sg.T('', key = NON_STAT_INFLEC_POINTS_KEY)]])]
                     ])],
-                    [sg.Frame('y-intercepts', visible = STARTUP_VISIBILITY, key = Y_INTERCEPT_FRAME_KEY, layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])],
                     [sg.Frame('Asymptotes', visible = STARTUP_VISIBILITY, key = ASYMPTOTES_FRAME_KEY, layout =[[sg.T('')]])]
                 ]
 
