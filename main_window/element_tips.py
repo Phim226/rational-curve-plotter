@@ -8,3 +8,6 @@ FORCE_DEGREE_TIP_END = ' will have randomly generated coefficients up to the cho
 SHOW_NEXT_GEN_TIP = ' If unticked then on each new generation the graph will be hidden '
 SHOW_NEXT_ANALYTICS_TIP = ' If unticked then on each new generation the analytics section will be hidden '
 SIMPLIFY_EQ_TIP = ' If ticked then common factors and coefficients will be cancelled out '
+
+#Control button tips
+UPDATE_TIP = ' Replots the graph and recalculates analytics of the current curve with the currently selected options '
