@@ -1,5 +1,5 @@
 from main_window.main_window_builder import build_main_window
-from main_window.graph.curve_figure import update_graph_section
+from main_window.graph.curve_figure import update_graph_section, configure_toolbar_buttons
 from main_window.curve_label_display.curve_label_figure import update_curve_label
 from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
 from main_window.options.options_controller import switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots
@@ -24,7 +24,7 @@ def _handle_event(window, values, event) -> None:
         update_progress_message(window, 'Updating analytics...')
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
         update_analytics_section(window)
-        update_progress_message(window, visible = False)
+        update_progress_message(window, 'Done!')
         window.refresh()
         update_generate_button(window, disabled = False)
     elif event in (RANDOM_GEN_KEY, MANUAL_GEN_KEY):
@@ -45,6 +45,7 @@ def _handle_event(window, values, event) -> None:
         switch_rand_coeffs(window, values)
 
 def _perform_startup_processes(window):
+    configure_toolbar_buttons()
     update_analytics_section_visiblity(window, visible = False)
 
 def main() -> None:
