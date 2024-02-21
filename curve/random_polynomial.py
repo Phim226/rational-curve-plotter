@@ -19,20 +19,20 @@ class RandPolynomial():
         self.symbolic_expression = sh.build_poly_exp_from_coeffs(self.coefficients, self.degree)
 
     def gen_random_roots(self, force_degree):
-        all_roots = [r for r in range(-3, 4)]
+        all_possible_roots = [r for r in range(-3, 4)]
         roots = []
         i = 0
         if force_degree:
             while i < self.max_degree:
-                index = ran.randint(0, len(all_roots)-1)
-                roots.append(all_roots[index])
+                index = ran.randint(0, len(all_possible_roots)-1)
+                roots.append(all_possible_roots[index])
                 i+=1
             return roots
-        all_roots.append(None)
+        all_possible_roots.append(None)
         while not roots:
             while i < self.max_degree:
-                index = ran.randint(0, len(all_roots)-1)
-                root = all_roots[index]
+                index = ran.randint(0, len(all_possible_roots)-1)
+                root = all_possible_roots[index]
                 if root is None:
                     i+=1 
                     continue
