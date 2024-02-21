@@ -10,24 +10,29 @@ from main_window.element_keys import *
 import PySimpleGUI as sg
 
 
+def _generate_graph_and_analytics(window, values, is_updating):
+    update_controls(window, disabled = True)
+    window.refresh() #refreshing the window prevents click buffering on disabled buttons
+    if not is_updating:
+        initialise_curve_objects(values)
+    update_progress_message(window, 'Generating and plotting next graph...')
+    update_graph_section(values, window)
+    update_progress_message(window, 'Formatting curve label and calculating analytics...')
+    update_curve_label(window, values[SIMPLIFY_EQ_KEY])
+    update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
+    update_analytics_section(window)
+    update_progress_message(window, 'Done!')
+    window.refresh()
+    update_controls(window, disabled = False)
+
 #TODO: implement logging
 #TODO: add event where if update graph button is pressed then the same graph is plotted again with current window values
 #TODO: find a more sophisticated way of event handling than a bulky if-elif-elif... statement (current event handling is completely unviable for more complicated applications)
 def _handle_event(window, values, event) -> None:
     if event is GEN_KEY:
-        update_controls(window, disabled = True)
-        window.refresh() #refreshing the window prevents click buffering on disabled buttons
-        initialise_curve_objects(values)
-        update_progress_message(window, 'Generating and plotting next graph...')
-        update_graph_section(values, window)
-        update_progress_message(window, 'Formatting curve label...')
-        update_curve_label(window, values[SIMPLIFY_EQ_KEY])
-        update_progress_message(window, 'Updating analytics...')
-        update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
-        update_analytics_section(window)
-        update_progress_message(window, 'Done!')
-        window.refresh()
-        update_controls(window, disabled = False)
+        _generate_graph_and_analytics(window, values, is_updating = False)
+    elif event is UPDATE_KEY:
+        _generate_graph_and_analytics(window, values, is_updating = True)
     elif event in (RANDOM_GEN_KEY, MANUAL_GEN_KEY):
         switch_random_and_manual_options(window, values, event)
     elif event is PLOT_ASYMP_KEY:
