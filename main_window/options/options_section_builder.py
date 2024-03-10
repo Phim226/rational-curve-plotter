@@ -14,14 +14,14 @@ def _build_random_options():
         [sg.Column(layout =[
             [sg.T('Numerator', key = RANDOM_NUM_TITLE_KEY, font = 'Helvetica 9 bold underline')],
             [sg.T('Degree', key = RANDOM_NUM_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
-             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_NUM_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
+             sg.Spin([i for i in range(0,4)], initial_value=2, key=RANDOM_NUM_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_NUM_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ]),
          sg.VerticalSeparator(),
          sg.Column(layout =[
             [sg.T('Denominator', key = RANDOM_DEN_TITLE_KEY, font = 'Helvetica 9 bold underline')],
             [sg.T('Degree', key = RANDOM_DEN_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
-             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_DEN_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
+             sg.Spin([i for i in range(0,4)], initial_value=2, key=RANDOM_DEN_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_DEN_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ])]
     ])

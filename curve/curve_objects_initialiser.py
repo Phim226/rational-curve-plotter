@@ -12,8 +12,8 @@ def initialise_curve_objects(values) -> None:
     numerator = RandPolynomial(max_num_degree, force_num_degree, random_coefficients, random_roots)
     denominator = RandPolynomial(max_den_degree, force_den_degree, random_coefficients, random_roots)
     #change these coefficients to manually assign coefficients for debugging
-    #numerator = RandPolynomial(coefficients=[-6,10, -7])
-    #denominator = RandPolynomial(coefficients=[9,-5,-3,7])
+    #numerator = RandPolynomial(coefficients=[-7,-3,-4,-4])
+    #denominator = RandPolynomial(coefficients=[-7,4,7])
     print("numerator coefficients: ", numerator.coefficients)
     print("denominator coefficients: ", denominator.coefficients)
     rational_function = RationalFunction(numerator, denominator)
