@@ -49,21 +49,20 @@ def _build_misc_options():
     return sg.Column([
         [sg.Checkbox('Always show next generated graph', default = True, key=SHOW_NEXT_GEN_KEY, tooltip=SHOW_NEXT_GEN_TIP),
          sg.Checkbox('Always show analytics', default = True, key=SHOW_NEXT_ANALYTICS_KEY, tooltip=SHOW_NEXT_ANALYTICS_TIP)],
-        [sg.Checkbox('Simplify equation', default = False, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP)],
+        [sg.Checkbox('Simplify equation', default = False, enable_events = True, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP)],
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
-         sg.Checkbox('Include curvilinear asymptotes', default = False, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
-        [sg.Checkbox('Plot derivate (nw)', default = False, key = PLOT_DERIVATIVE_KEY),
-         sg.Checkbox('Plot roots (nw)', default = False, key = PLOT_ROOTS_KEY),
-         sg.Checkbox('Plot stationary points (nw)', default = False, key = PLOT_STATIONARY_POINTS_KEY)],
-        [sg.Checkbox('Plot stationary inflection points (nw)', default = False, key = PLOT_STAT_INFLEC_POINTS),
-         sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, key = PLOT_NON_STAT_INFLEC_POINTS)]
+         sg.Checkbox('Include curvilinear asymptotes', default = False, enable_events = True, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
+        [sg.Checkbox('Plot derivate (nw)', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
+         sg.Checkbox('Plot roots (nw)', default = False, enable_events = True, key = PLOT_ROOTS_KEY),
+         sg.Checkbox('Plot stationary points (nw)', default = False, enable_events = True, key = PLOT_STATIONARY_POINTS_KEY)],
+        [sg.Checkbox('Plot stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS),
+         sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS)]
     ])
 
 #TODO: include options for manually inputting coefficients
 #TODO: add option to plot interesting points (roots, y intercept, stationary, inflection)
 #TODO: add option to plot derivative alongside regular curve
 #TODO: add option for manually inputting roots 
-#TODO: add option to randomly generate the roots instead of the coefficients (include tip saying this is recommended for 'easier' practice since roots can then be guessed since they are guaranteed to be integer)
 def build_options_section():
     return sg.Frame('Curve Generation Options', 
                             layout = [

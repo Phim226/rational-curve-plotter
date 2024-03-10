@@ -1,9 +1,7 @@
 from sympy.abc import x
 import sympy as sp
 import numpy as np
-import curve.symbol_handler as sh
 
-#TODO: (MAYBE) generate properly formatted derivative function to display in analytics section
 class RationalFunction():
 
      def __init__(self, numerator, denominator):
