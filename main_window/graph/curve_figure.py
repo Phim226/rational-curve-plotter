@@ -14,7 +14,7 @@ def configure_toolbar_buttons() -> None:
         (None, None, None, None),
         ('Pan', 'Pan axes with left mouse, zoom with right', 'move', 'pan'),
         ('Zoom', 'Zoom to rectangle', 'zoom_to_rect', 'zoom'),
-        ('Subplots', 'Configure subplots', 'subplots', 'configure_subplots'),
+        #(None, None, None, None) this section was for subplots
         (None, None, None, None),
       )
 
