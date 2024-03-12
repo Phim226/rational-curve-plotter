@@ -11,10 +11,10 @@ class RationalFunction():
          self.rational_expression_simp = sp.simplify(self.rational_expression)
          self.der_expression = sp.diff(self.rational_expression, x)
          self.second_der_expression = sp.diff(self.der_expression, x)
+         self.reduces_to_constant = self.check_if_function_reduces_to_constant(self.rational_expression)
          self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
          self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy")
          self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
-         self.reduces_to_constant = self.check_if_function_reduces_to_constant(self.rational_expression)
          self.discontinuities = self._find_discontinuities(self.rational_expression_simp) if not self.reduces_to_constant else []
          
 
