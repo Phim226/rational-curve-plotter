@@ -14,14 +14,14 @@ def _build_random_options():
         [sg.Column(layout =[
             [sg.T('Numerator', key = RANDOM_NUM_TITLE_KEY, font = 'Helvetica 9 bold underline')],
             [sg.T('Degree', key = RANDOM_NUM_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
-             sg.Spin([i for i in range(0,4)], initial_value=2, key=RANDOM_NUM_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
+             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_NUM_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_NUM_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ]),
          sg.VerticalSeparator(),
          sg.Column(layout =[
             [sg.T('Denominator', key = RANDOM_DEN_TITLE_KEY, font = 'Helvetica 9 bold underline')],
             [sg.T('Degree', key = RANDOM_DEN_DEG_TEXT_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP), 
-             sg.Spin([i for i in range(0,4)], initial_value=2, key=RANDOM_DEN_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
+             sg.Spin([i for i in range(0,3)], initial_value=2, key=RANDOM_DEN_DEG_SPIN_KEY, tooltip=RANDOM_DEGREE_SPIN_TIP)],
             [sg.Checkbox('Force degree', default = False, enable_events=True, key=RANDOM_FORCE_DEN_DEG_KEY, tooltip = FORCE_DEGREE_TIP_START + 'numerator' + FORCE_DEGREE_TIP_END)]
          ])]
     ])
@@ -47,9 +47,9 @@ def _build_manual_options():
 
 def _build_misc_options():
     return sg.Column([
-        [sg.Checkbox('Always show next generated graph', default = True, key=SHOW_NEXT_GEN_KEY, tooltip=SHOW_NEXT_GEN_TIP),
-         sg.Checkbox('Always show analytics', default = True, key=SHOW_NEXT_ANALYTICS_KEY, tooltip=SHOW_NEXT_ANALYTICS_TIP)],
-        [sg.Checkbox('Simplify equation', default = False, enable_events = True, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP)],
+        [sg.Checkbox('Always show next generated graph', default = True, key = SHOW_NEXT_GEN_KEY, tooltip = SHOW_NEXT_GEN_TIP)],
+        [sg.Checkbox('Simplify equation', default = False, enable_events = True, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP),
+         sg.Checkbox('Exclude graphs that reduce to a constant', default = True, key = EXCLUDE_CONSTANT_KEY)],
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
          sg.Checkbox('Include curvilinear asymptotes', default = False, enable_events = True, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
         [sg.Checkbox('Plot derivate (nw)', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
@@ -57,6 +57,14 @@ def _build_misc_options():
          sg.Checkbox('Plot stationary points (nw)', default = False, enable_events = True, key = PLOT_STATIONARY_POINTS_KEY)],
         [sg.Checkbox('Plot stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS),
          sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS)]
+    ])
+
+def _build_analytics_options():
+    return sg.Column([
+        [sg.Checkbox('Always show analytics', default = True, key = SHOW_NEXT_ANALYTICS_KEY, tooltip = SHOW_NEXT_ANALYTICS_TIP)],
+        [sg.Checkbox('Display all analytics as decimals', default = False, key = DISPLAY_AS_DECIMALS_KEY)],
+        [sg.T('Decimal places', key = DECIMAL_PLACES_KEY, tooltip = DECIMAL_PLACES_TIP), 
+         sg.Spin([i for i in range(0,9)], initial_value=2, key = DECIMAL_PLACES_SPIN_KEY, tooltip = DECIMAL_PLACES_TIP)]
     ])
 
 #TODO: include options for manually inputting coefficients
@@ -70,5 +78,7 @@ def build_options_section():
                                   sg.VerticalSeparator(),
                                   _build_manual_options(),
                                   sg.VerticalSeparator(),
-                                  sg.vtop(_build_misc_options())]
+                                  sg.vtop(_build_misc_options()),
+                                  sg.VerticalSeparator(),
+                                  sg.vtop(_build_analytics_options())]
                             ])
