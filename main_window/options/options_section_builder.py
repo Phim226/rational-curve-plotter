@@ -49,7 +49,7 @@ def _build_misc_options():
     return sg.Column([
         [sg.Checkbox('Always show next generated graph', default = True, key = SHOW_NEXT_GEN_KEY, tooltip = SHOW_NEXT_GEN_TIP)],
         [sg.Checkbox('Simplify equation', default = False, enable_events = True, key = SIMPLIFY_EQ_KEY, tooltip = SIMPLIFY_EQ_TIP),
-         sg.Checkbox('Exclude graphs that reduce to a constant', default = True, key = EXCLUDE_CONSTANT_KEY)],
+         sg.Checkbox('Exclude graphs that reduce to a constant (nw)', default = True, key = EXCLUDE_CONSTANT_KEY)],
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
          sg.Checkbox('Include curvilinear asymptotes', default = False, enable_events = True, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
         [sg.Checkbox('Plot derivate (nw)', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
@@ -62,8 +62,8 @@ def _build_misc_options():
 def _build_analytics_options():
     return sg.Column([
         [sg.Checkbox('Always show analytics', default = True, key = SHOW_NEXT_ANALYTICS_KEY, tooltip = SHOW_NEXT_ANALYTICS_TIP)],
-        [sg.Checkbox('Display all analytics as decimals', default = False, key = DISPLAY_AS_DECIMALS_KEY)],
-        [sg.T('Decimal places', key = DECIMAL_PLACES_KEY, tooltip = DECIMAL_PLACES_TIP), 
+        [sg.Checkbox('Display all analytics as decimals (nw)', default = False, key = DISPLAY_AS_DECIMALS_KEY)],
+        [sg.T('Decimal places (nw)', key = DECIMAL_PLACES_KEY, tooltip = DECIMAL_PLACES_TIP), 
          sg.Spin([i for i in range(0,9)], initial_value=2, key = DECIMAL_PLACES_SPIN_KEY, tooltip = DECIMAL_PLACES_TIP)]
     ])
 
