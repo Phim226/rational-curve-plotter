@@ -88,7 +88,6 @@ def main() -> None:
     _perform_startup_processes(window)
     while True:
         event, values = window.read()
-        window.bring_to_front
         print(event, values)
         if event in (sg.WIN_CLOSED, EXIT_KEY):
             break
