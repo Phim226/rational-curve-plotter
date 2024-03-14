@@ -20,24 +20,27 @@ def define_global_variables() -> None:
 Adjusts the limits of the y-axis depending on the minimum and maximum values of the curve, or sets them to a default of -10 and 10
 """
 #TODO: improve decision making about initial y and x axis limits so that, apart from extreme cases, all graph sections are visible when first displaying the graph
-def _adjust_yaxis(domains, eval) -> None:
+def _adjust_yaxis(domains, eval, reduces_to_cosntant) -> None:
     ylim_low = -10.0
     ylim_high = 10.0
-    eval_min = min(eval(i).min() for i in domains)
-    eval_max = max(eval(i).max() for i in domains)
-    if -100 < eval_min < -10:
-        ylim_low = eval_min - 2
-    elif -10 < eval_min < 0:
-        ylim_low = eval_min - 1
-    elif 0 < eval_min < ylim_high:
-        ylim_low = -1
-    if 10 < eval_max < 100:
-        ylim_high = eval_max + 2
-    elif 0 < eval_max < 10:
-        ylim_high = eval_max + 1
-    elif ylim_low < eval_max < 0:
-        ylim_high = 1
-    plt.ylim((ylim_low,ylim_high))
+    if reduces_to_cosntant:
+        plt.ylim((ylim_low,ylim_high))
+    else:
+        eval_min = min(eval(i).min() for i in domains)
+        eval_max = max(eval(i).max() for i in domains)
+        if -100 < eval_min < -10:
+            ylim_low = eval_min - 2
+        elif -10 < eval_min < 0:
+            ylim_low = eval_min - 1
+        elif 0 < eval_min < ylim_high:
+            ylim_low = -1
+        if 10 < eval_max < 100:
+            ylim_high = eval_max + 2
+        elif 0 < eval_max < 10:
+            ylim_high = eval_max + 1
+        elif ylim_low < eval_max < 0:
+            ylim_high = 1
+        plt.ylim((ylim_low,ylim_high))
 
 """
 Sets the initial limits of the graph to be x = -10 and x = 10, and adjusts based on position of asymptotes
@@ -72,7 +75,7 @@ def plot_asymptotes(plot_curv_asymps) -> None:
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
 
-def _plot_graph_section(x_min, x_max, eval, domains) -> None:
+def _plot_graph_section(x_min, x_max, eval, domains, data_points = data_points) -> None:
     X = np.linspace(x_min+delta, x_max-delta, data_points)
     plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-")
     domains.append(X)
@@ -80,14 +83,18 @@ def _plot_graph_section(x_min, x_max, eval, domains) -> None:
 def plot_curve() -> None:
     _adjust_xaxis()
     eval = rational_function.function_evaluator
+    reduces_to_constant = rational_function.reduces_to_constant
     #Graph has to be split into various separate sections to account for vertical asymptotes
     domains = []
     x_min = x_lims[0]
-    if discontinuities:
-        for d in discontinuities:
-            _plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
-            x_min = d
-        _plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
+    if not reduces_to_constant:
+        if discontinuities:
+            for d in discontinuities:
+                _plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
+                x_min = d
+            _plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
+        else:
+            _plot_graph_section(x_lims[0], x_lims[1], eval, domains)
     else:
-        _plot_graph_section(x_lims[0], x_lims[1], eval, domains)
-    _adjust_yaxis(domains, eval)
+        _plot_graph_section(x_lims[0], x_lims[1], eval, domains, 2)
+    _adjust_yaxis(domains, eval, reduces_to_constant)

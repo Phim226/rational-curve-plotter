@@ -12,8 +12,8 @@ class RationalFunction():
          self.der_expression = sp.diff(self.rational_expression, x)
          self.second_der_expression = sp.diff(self.der_expression, x)
          self.reduces_to_constant = self.check_if_function_reduces_to_constant(self.rational_expression)
-         self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
-         self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy")
+         self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy") if not self.reduces_to_constant else lambda t : (numerator.coefficients[0]*t)/(denominator.coefficients[0]*t) 
+         self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
          self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
          self.discontinuities = self._find_discontinuities(self.rational_expression_simp) if not self.reduces_to_constant else []
          
@@ -104,6 +104,8 @@ class RationalFunction():
      def get_function_latex(self, latex_is_simplified):
           if latex_is_simplified:
                return sp.latex(self.rational_expression_simp)
+          elif not latex_is_simplified and self.reduces_to_constant:
+               return r'\frac{' + sp.latex(self.numerator.symbolic_expression) + r'}{' + sp.latex(self.denominator.symbolic_expression) + r'}'
           return sp.latex(self.rational_expression)
     
 
