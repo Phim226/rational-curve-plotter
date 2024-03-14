@@ -13,7 +13,7 @@ class RandPolynomial():
         elif coefficients:
             self.coefficients = self.format_coeffs(coefficients)
         elif random_roots:
-            self.real_roots = self.gen_random_roots(force_degree)
+            self.real_roots = real_roots if real_roots else self.gen_random_roots(force_degree)
             self.coefficients = sh.get_coeffs_from_roots(self.real_roots)
         self.degree = max_degree if force_degree else self.get_degree(self.coefficients)
         self.symbolic_expression = sh.build_poly_exp_from_coeffs(self.coefficients, self.degree)
