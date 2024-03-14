@@ -12,7 +12,7 @@ from main_window.element_keys import *
 import PySimpleGUI as sg
 
 
-def _generate_graph_and_analytics(window, values, is_updating):
+def _generate_graph_and_analytics(window, values, is_updating) -> None:
     update_controls(window, disabled = True)
     window.refresh() #refreshing the window prevents click buffering on disabled buttons
     if not is_updating:
@@ -78,7 +78,7 @@ def _handle_event(window, values, event) -> None:
     elif event is RANDOM_ROOTS_KEY:
         switch_rand_coeffs(window, values)
 
-def _perform_startup_processes(window):
+def _perform_startup_processes(window) -> None:
     configure_toolbar_buttons()
     update_analytics_section_visiblity(window, visible = False)
 
