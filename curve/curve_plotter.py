@@ -84,11 +84,11 @@ def plot_curve() -> None:
     _adjust_xaxis()
     eval = rational_function.function_evaluator
     reduces_to_constant = rational_function.reduces_to_constant
-    #Graph has to be split into various separate sections to account for vertical asymptotes
     domains = []
     x_min = x_lims[0]
     if not reduces_to_constant:
         if discontinuities:
+            #Graph has to be split into various separate sections to account for vertical asymptotes
             for d in discontinuities:
                 _plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
                 x_min = d
