@@ -5,7 +5,8 @@ from main_window.analytics.analytics_controller import update_analytics_section,
 from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, 
                                                     switch_rand_roots, reset_update_bools, switch_simplify_bool, switch_plot_asymps_bool, switch_include_curv_bool,
                                                     switch_plot_deriv_bool, switch_plot_roots_bool, switch_plot_stat_points_bool, switch_plot_stat_inflec_bool,
-                                                    switch_plot_nonstat_inflec_bool, get_graph_update_bool, get_curve_label_update_bool)
+                                                    switch_plot_nonstat_inflec_bool, switch_display_as_decimals_bool, switch_decimal_places_bool, 
+                                                    get_graph_update_bool, get_curve_label_update_bool, get_analytics_update_bool)
 from main_window.graph.graph_section_controller import update_controls, update_progress_message, update_visibility_of_graph_section
 from curve.curve_objects_initialiser import initialise_curve_objects
 from main_window.element_keys import *
@@ -22,18 +23,19 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
         update_progress_message(window, 'Formatting curve label and calculating analytics...')
         update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
-        update_analytics_section(window)
+        update_analytics_section(window, values)
     else:
         update_progress_message(window, 'Updating current graph...')
         graph_needs_updating = get_graph_update_bool()
         curve_label_needs_updating = get_curve_label_update_bool()
+        analytics_needs_updating = get_analytics_update_bool()
         if graph_needs_updating:
             update_graph_section(values, window)
         if curve_label_needs_updating:
             update_curve_label(window, values[SIMPLIFY_EQ_KEY])
-        #TODO: add in condition for updating analytics when relevant options are added
-        update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
-        update_analytics_section(window)
+        if analytics_needs_updating:
+            update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
+            update_analytics_section(window, values)
     update_progress_message(window, 'Done!')
     window.refresh()
     update_controls(window, disabled = False)
@@ -65,6 +67,10 @@ def _handle_event(window, values, event) -> None:
         switch_plot_stat_inflec_bool()
     elif event is PLOT_NON_STAT_INFLEC_POINTS:
         switch_plot_nonstat_inflec_bool()
+    elif event is DISPLAY_AS_DECIMALS_KEY:
+        switch_display_as_decimals_bool()
+    elif event is DECIMAL_PLACES_SPIN_KEY:
+        switch_decimal_places_bool()
     elif event is SHOW_GRAPH_KEY:
         update_visibility_of_graph_section(window, visible = True)
     elif event is HIDE_GRAPH_KEY:
