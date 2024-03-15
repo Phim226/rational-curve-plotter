@@ -7,22 +7,23 @@ import curve.curve_objects_initialiser as coi
 #TODO: Display derivative function (with formatting options)
 #TODO: Display asymptotes 
 
-def _update_roots_info(window):
-    roots = rational_function.calculate_roots()
+def _update_roots_info(window, display_analytics_as_decimals, decimal_places) -> None:
+    decimal_places = decimal_places if display_analytics_as_decimals else None
+    roots = rational_function.calculate_roots(decimal_places)
     if roots:
         window[ROOTS_KEY].update(value = roots)
     else:
         window[ROOTS_KEY].update(value = "There are no real roots")
 
-def _update_y_intercept_info(window):
-    print_exact_value = True
-    y_intercept = rational_function.calculate_y_intercept(print_exact_value)
+def _update_y_intercept_info(window, display_analytics_as_decimals, decimal_places) -> None:
+    decimal_places = decimal_places if display_analytics_as_decimals else None
+    y_intercept = rational_function.calculate_y_intercept(decimal_places)
     if y_intercept is None:
         window[Y_INTERCEPT_KEY].update(value = "The curve doesn't cross the y-axis")
     else: 
         window[Y_INTERCEPT_KEY].update(value = "Curve crosses the y-axis at y = " + str(y_intercept))
 
-def _update_stationary_points_info(window, decimal_places):
+def _update_stationary_points_info(window, decimal_places) -> None:
     stat_points = rational_function.calc_and_classify_stationary_points(decimal_places=decimal_places)
     minima = stat_points.get('Minima')
     maxima = stat_points.get('Maxima')
@@ -48,16 +49,17 @@ def _update_non_stat_inflection_points_info(window, decimal_places):
     else:
         window[NON_STAT_INFLEC_POINTS_KEY].update(value = 'There are no non-stationary inflection points')
 
-def update_analytics_section(window, values):
+def update_analytics_section(window, values) -> None:
     global rational_function
     rational_function = coi.rational_function
+    display_analytics_as_decimals = values[DISPLAY_AS_DECIMALS_KEY]
     decimal_places = values[DECIMAL_PLACES_SPIN_KEY]
-    _update_roots_info(window)
-    _update_y_intercept_info(window)
+    _update_roots_info(window, display_analytics_as_decimals, decimal_places)
+    _update_y_intercept_info(window, display_analytics_as_decimals, decimal_places)
     _update_stationary_points_info(window, decimal_places)
     _update_non_stat_inflection_points_info(window, decimal_places)
 
-def update_analytics_section_visiblity(window, visible):
+def update_analytics_section_visiblity(window, visible) -> None:
     window[ROOTS_FRAME_KEY].update(visible = visible)
     window[DERIVATIVE_FRAME_KEY].update(visible = visible)
     window[Y_INTERCEPT_FRAME_KEY].update(visible = visible)

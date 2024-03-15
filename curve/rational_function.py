@@ -31,21 +31,23 @@ class RationalFunction():
      def check_if_function_reduces_to_constant(self, rational_expression): 
          return sp.simplify(rational_expression).is_real
 
-     def calculate_y_intercept(self, print_exact_value, decimals = None):
+     def calculate_y_intercept(self, decimals):
           for d in self.discontinuities:
                if np.isclose(d, 0):
                     return None
-          if print_exact_value:
+          if decimals is None:
                return self.function_evaluator(sp.Integer(0))
           return round(self.function_evaluator(0), decimals)
 
-     def calculate_roots(self, show_complex_roots=False):
+     def calculate_roots(self, decimal_places, show_complex_roots=False):
           roots = sp.solve(self.rational_expression, x)
           if show_complex_roots:
                return roots
           real_roots =[]
           for r in roots:
                if r.is_real:
+                    if decimal_places is not None:
+                         r = round(r, decimal_places)
                     real_roots.append(r)
           return real_roots
      
