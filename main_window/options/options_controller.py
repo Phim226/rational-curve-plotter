@@ -116,7 +116,7 @@ def switch_display_as_decimals_bool() -> None:
 
 def switch_decimal_places_bool() -> None:
     global decimal_places_has_changed
-    decimal_places_has_changed = not decimal_places_has_changed
+    decimal_places_has_changed = not decimal_places_has_changed if not decimal_places_has_changed else decimal_places_has_changed
 
 def get_graph_update_bool():
     pa = plot_asymps_has_changed
