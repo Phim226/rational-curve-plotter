@@ -63,7 +63,8 @@ def _build_analytics_options():
     return sg.Column([
         [sg.Checkbox('Always show analytics', default = True, key = SHOW_NEXT_ANALYTICS_KEY, tooltip = SHOW_NEXT_ANALYTICS_TIP)],
         [sg.Checkbox('Display derivative as single fraction', default = False, enable_events = True, key = DERIVATIVE_AS_FRACTION_KEY)],
-        [sg.Checkbox('Display all analytics as decimals', default = False, enable_events = True, key = DISPLAY_AS_DECIMALS_KEY)],
+        [sg.Checkbox('Simplify derivative equation', default = False, enable_events = True, key = SIMPLIFY_DER_EQ_KEY)],
+        [sg.Checkbox('Display all analytics as decimals', default = False, enable_events = True, key = DISPLAY_AS_DECIMALS_KEY, tooltip = ANALYTICS_AS_DECIMALS_TIP)],
         [sg.T('Decimal places', key = DECIMAL_PLACES_KEY, tooltip = DECIMAL_PLACES_TIP), 
          sg.Spin([i for i in range(0,9)], initial_value=2, enable_events = True, key = DECIMAL_PLACES_SPIN_KEY, tooltip = DECIMAL_PLACES_TIP)]
     ])

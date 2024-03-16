@@ -39,7 +39,7 @@ def update_curve_label(window, label_is_simplified):
     key = CURVE_LABEL_KEY
     _build_label(window, key, latex, fontsize=16, fig_height=0.6, fig_width=2.2)
 
-def update_derivative_label(window, display_der_as_fraction):
+def update_derivative_label(window, display_der_as_fraction, latex_is_simplified):
     key = DERIVATIVE_LABEL_KEY
-    latex = coi.rational_function.get_derivative_latex(display_der_as_fraction)
+    latex = coi.rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
     _build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.0)

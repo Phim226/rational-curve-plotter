@@ -12,6 +12,7 @@ plot_nonstat_inflec_has_changed = False
 display_as_decimals_has_changed = False
 decimal_places_has_changed = False
 deriv_as_fraction_has_changed = False
+simplify_der_has_changed = False
 
 def _switch_random_options(window, disabled) -> None:
     window[RANDOM_COEFFICIENTS_KEY].update(disabled = disabled)
@@ -59,7 +60,7 @@ def switch_rand_coeffs(window, values) -> None:
 
 def reset_update_bools() -> None:
     global simplify_has_changed, plot_asymps_has_changed, include_curv_has_changed, plot_deriv_has_changed, plot_roots_has_changed, plot_stat_points_has_changed
-    global plot_stat_inflec_has_changed, plot_nonstat_inflec_has_changed, display_as_decimals_has_changed, decimal_places_has_changed, deriv_as_fraction_has_changed
+    global plot_stat_inflec_has_changed, plot_nonstat_inflec_has_changed, display_as_decimals_has_changed, decimal_places_has_changed, deriv_as_fraction_has_changed, simplify_der_has_changed
     simplify_has_changed = False
     plot_asymps_has_changed = False
     include_curv_has_changed = False
@@ -71,6 +72,7 @@ def reset_update_bools() -> None:
     display_as_decimals_has_changed = False 
     decimal_places_has_changed = False
     deriv_as_fraction_has_changed = False
+    simplify_der_has_changed = False
 
 def switch_simplify_bool() -> None:
     global simplify_has_changed
@@ -116,6 +118,10 @@ def switch_deriv_as_fraction_bool() -> None:
     global deriv_as_fraction_has_changed
     deriv_as_fraction_has_changed = not deriv_as_fraction_has_changed
 
+def switch_simplify_der_eq_bool() -> None:
+    global simplify_der_has_changed
+    simplify_der_has_changed = not simplify_der_has_changed
+
 def get_graph_update_bool():
     pa = plot_asymps_has_changed
     ic = include_curv_has_changed
@@ -134,4 +140,4 @@ def get_analytics_update_bool():
     return display_as_decimals_has_changed or decimal_places_has_changed
 
 def get_derivative_label_update_bool():
-    return deriv_as_fraction_has_changed
+    return deriv_as_fraction_has_changed or simplify_der_has_changed

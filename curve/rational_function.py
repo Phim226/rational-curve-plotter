@@ -110,13 +110,18 @@ class RationalFunction():
                return r'\frac{' + sp.latex(self.numerator.symbolic_expression) + r'}{' + sp.latex(self.denominator.symbolic_expression) + r'}'
           return sp.latex(self.rational_expression)
 
-     def get_derivative_latex(self, display_der_as_fraction):
+     def get_derivative_latex(self, display_der_as_fraction, latex_is_simplified):
           if display_der_as_fraction:
                numerator = self.numerator.symbolic_expression
                denominator = self.denominator.symbolic_expression
-               der_numerator_exp_latex = sp.latex(sp.expand(sp.diff(numerator)*denominator - sp.diff(denominator)*numerator))
-               der_denominator_exp_latex = '(' + sp.latex(denominator) + ')^2'
-               return r'\frac{' + der_numerator_exp_latex + r'}{' + der_denominator_exp_latex + r'}'
+               der_numerator_exp = sp.expand(sp.diff(numerator)*denominator - sp.diff(denominator)*numerator)
+               der_denominator_exp = denominator*denominator
+               if latex_is_simplified:
+                    der_denominator_exp = sp.expand(der_denominator_exp)
+                    return sp.latex(sp.simplify(der_numerator_exp/der_denominator_exp))
+               return sp.latex(der_numerator_exp/der_denominator_exp)
+          if latex_is_simplified:
+               return sp.latex(sp.simplify(self.der_expression))
           return sp.latex(self.der_expression)
     
 
