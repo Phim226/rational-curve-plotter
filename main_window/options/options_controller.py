@@ -11,6 +11,7 @@ plot_stat_inflec_has_changed = False
 plot_nonstat_inflec_has_changed = False
 display_as_decimals_has_changed = False
 decimal_places_has_changed = False
+deriv_as_fraction_has_changed = False
 
 def _switch_random_options(window, disabled) -> None:
     window[RANDOM_COEFFICIENTS_KEY].update(disabled = disabled)
@@ -35,14 +36,6 @@ def _switch_manual_options(window, disabled) -> None:
     window[MANUAL_DEN_DEG_TEXT_KEY].update(text_color = disabled_colour if disabled else 'white')
     window[INPUT_VALUES_KEY].update(disabled = disabled)
 
-'''
-Called either when the 'Randomly generate curve' or 'Input curve parameters manually' boxes are checked
-and disables or enables the appropriate option section. 
-
-For example, if 'Randomly generate curve' is unticked and 'Input curve parameters manually' is ticked and 'Randomly generate curve' is pressed
-then all of the manual options are disabled and all the random options are enabled. If the same button is then pressed again then
-the manual options will be re-enabled and the random options disabled.
-'''
 def switch_random_and_manual_options(window, values, event) -> None:
     if event is RANDOM_GEN_KEY:
         disabled = values[RANDOM_GEN_KEY]
@@ -65,8 +58,8 @@ def switch_rand_coeffs(window, values) -> None:
     window[RANDOM_COEFFICIENTS_KEY].update(value = not values[RANDOM_ROOTS_KEY])
 
 def reset_update_bools() -> None:
-    global simplify_has_changed, plot_asymps_has_changed, include_curv_has_changed, plot_deriv_has_changed, plot_roots_has_changed
-    global plot_stat_points_has_changed, plot_stat_inflec_has_changed, plot_nonstat_inflec_has_changed, display_as_decimals_has_changed, decimal_places_has_changed
+    global simplify_has_changed, plot_asymps_has_changed, include_curv_has_changed, plot_deriv_has_changed, plot_roots_has_changed, plot_stat_points_has_changed
+    global plot_stat_inflec_has_changed, plot_nonstat_inflec_has_changed, display_as_decimals_has_changed, decimal_places_has_changed, deriv_as_fraction_has_changed
     simplify_has_changed = False
     plot_asymps_has_changed = False
     include_curv_has_changed = False
@@ -77,6 +70,7 @@ def reset_update_bools() -> None:
     plot_nonstat_inflec_has_changed = False
     display_as_decimals_has_changed = False 
     decimal_places_has_changed = False
+    deriv_as_fraction_has_changed = False
 
 def switch_simplify_bool() -> None:
     global simplify_has_changed
@@ -118,6 +112,10 @@ def switch_decimal_places_bool() -> None:
     global decimal_places_has_changed
     decimal_places_has_changed = not decimal_places_has_changed if not decimal_places_has_changed else decimal_places_has_changed
 
+def switch_deriv_as_fraction_bool() -> None:
+    global deriv_as_fraction_has_changed
+    deriv_as_fraction_has_changed = not deriv_as_fraction_has_changed
+
 def get_graph_update_bool():
     pa = plot_asymps_has_changed
     ic = include_curv_has_changed
@@ -134,3 +132,6 @@ def get_curve_label_update_bool():
 
 def get_analytics_update_bool():
     return display_as_decimals_has_changed or decimal_places_has_changed
+
+def get_derivative_label_update_bool():
+    return deriv_as_fraction_has_changed
