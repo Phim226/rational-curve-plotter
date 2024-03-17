@@ -15,11 +15,12 @@ class RationalFunction():
          self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy") if not self.reduces_to_constant else lambda t : (numerator.coefficients[0]*t)/(denominator.coefficients[0]*t) 
          self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
          self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
-         self.discontinuities = self._find_discontinuities(self.rational_expression_simp) if not self.reduces_to_constant else []
+         exp = self.rational_expression if not denominator.symbolic_expression.is_Rational and not denominator.symbolic_expression.is_Add else self.rational_expression_simp
+         self.discontinuities = self._find_discontinuities(exp) if not self.reduces_to_constant else []
          
 
-     def _find_discontinuities(self, rational_expression_simp):
-          inverted_rational_exp = 1/rational_expression_simp
+     def _find_discontinuities(self, rational_expression):
+          inverted_rational_exp = sp.simplify(1/rational_expression)
           poles = sp.solve(inverted_rational_exp, x)
           discontinuities = []
           for r in poles:
