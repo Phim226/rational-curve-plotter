@@ -77,6 +77,7 @@ class RationalFunction():
           for d in self.discontinuities:
                if np.isclose(d, 0):
                     self.y_intercept = None
+                    return self.y_intercept
           if decimals is None:
                self.y_intercept = self.function_evaluator(sp.Integer(0))
           else:
