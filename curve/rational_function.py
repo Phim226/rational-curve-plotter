@@ -11,7 +11,7 @@ class RationalFunction():
           self.rational_expression_simp = sp.simplify(self.rational_expression)
           self.der_expression = sp.diff(self.rational_expression, x)
           self.second_der_expression = sp.diff(self.der_expression, x)
-          self.reduces_to_constant = self.check_if_function_reduces_to_constant(self.rational_expression)
+          self.reduces_to_constant = self._check_if_function_reduces_to_constant(self.rational_expression)
           if self.reduces_to_constant:
                self.function_evaluator = lambda t : (numerator.coefficients[0]*t)/(denominator.coefficients[0]*t)
           elif not self.reduces_to_constant and denominator.symbolic_expression.is_real:
@@ -39,19 +39,26 @@ class RationalFunction():
           return sorted(discontinuities)
 
      #returns True if numerator and denominator cancel each other out and the function reduces to a constant
-     def check_if_function_reduces_to_constant(self, rational_expression): 
+     def _check_if_function_reduces_to_constant(self, rational_expression): 
          return sp.simplify(rational_expression).is_real
+     
+     def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
+          if value_is_nice:
+               return (sp.re(x_val), sp.re(self.function_evaluator(x_val)))
+          return (round(sp.re(x_val), decimal_places), round(sp.re(self.function_evaluator(x_val)), decimal_places))
+     
+     def _is_value_nice(self, val):
+          if isinstance(val, sp.Rational):
+               return True
+          return False
 
-     def calculate_y_intercept(self, decimals):
-          for d in self.discontinuities:
-               if np.isclose(d, 0):
-                    self.y_intercept = None
-          if decimals is None:
-               self.y_intercept = self.function_evaluator(sp.Integer(0))
-          else:
-               self.y_intercept = round(self.function_evaluator(0), decimals)
-          return self.y_intercept
-
+     def _calculate_der_expression_as_fraction(self):
+          numerator = self.numerator.symbolic_expression
+          denominator = self.denominator.symbolic_expression
+          der_numerator_exp = sp.expand(sp.diff(numerator)*denominator - sp.diff(denominator)*numerator)
+          der_denominator_exp = denominator*denominator
+          return der_numerator_exp/der_denominator_exp
+     
      def calculate_roots(self, decimal_places, show_complex_roots=False):
           roots = sp.solve(self.rational_expression, x)
           if show_complex_roots:
@@ -66,23 +73,25 @@ class RationalFunction():
           self.roots = real_roots
           return real_roots
      
-     def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
-          if value_is_nice:
-               return (sp.re(x_val), sp.re(self.function_evaluator(x_val)))
-          return (round(sp.re(x_val), decimal_places), round(sp.re(self.function_evaluator(x_val)), decimal_places))
-     
-     def _is_value_nice(self, val):
-          if isinstance(val, sp.Rational):
-               return True
-          return False
+     def calculate_y_intercept(self, decimals):
+          for d in self.discontinuities:
+               if np.isclose(d, 0):
+                    self.y_intercept = None
+          if decimals is None:
+               self.y_intercept = self.function_evaluator(sp.Integer(0))
+          else:
+               self.y_intercept = round(self.function_evaluator(0), decimals)
+          return self.y_intercept
 
      def calc_and_classify_stationary_points(self, decimal_places=None):
           self.inflection_x_val, inflections, minima, maxima = [], [], [], []
           num_stat_points=0
-          solutions = sp.solve(self.der_expression, x)
+          solutions = sp.solve(sp.simplify(self.der_expression), x)
           for p in solutions:
                if np.isclose(float(sp.im(p.evalf())), 0):
                     value_is_nice = self._is_value_nice(p)
+                    if not value_is_nice:
+                         p = p.evalf()
                     second_der_p_value = float(sp.re(self.second_der_evaluator(p)))
                     if np.isclose(second_der_p_value, 0):
                          inflections.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
@@ -100,7 +109,7 @@ class RationalFunction():
      def calc_non_stationary_inflection_points(self, decimal_places=None):
           self.inflection_points = []
           num_inflection_points = 0
-          solutions = sp.solve(self.second_der_expression, x)
+          solutions = sp.solve(sp.simplify(self.second_der_expression), x)
           for p in solutions:
                if np.isclose(float(sp.im(p.evalf())), 0) and not any(np.isclose(float(sp.re(p.evalf())), self.inflection_x_val)):
                     value_is_nice = self._is_value_nice(p)
