@@ -55,8 +55,8 @@ def _build_misc_options():
         [sg.Checkbox('Plot derivate (nw)', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
          sg.Checkbox('Plot roots (nw)', default = False, enable_events = True, key = PLOT_ROOTS_KEY),
          sg.Checkbox('Plot stationary points (nw)', default = False, enable_events = True, key = PLOT_STATIONARY_POINTS_KEY)],
-        [sg.Checkbox('Plot stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS),
-         sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS)]
+        [sg.Checkbox('Plot stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS_KEY),
+         sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS_KEY)]
     ])
 
 def _build_analytics_options():
