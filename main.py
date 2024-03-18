@@ -19,27 +19,26 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
     if not is_updating:
         initialise_curve_objects(values)
         update_progress_message(window, 'Generating and plotting next graph...')
-        update_graph_section(values, window)
-        update_progress_message(window, 'Formatting curve label and calculating analytics...')
-        update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
         update_analytics_section(window, values)
         update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
+        update_graph_section(values, window)
+        update_curve_label(window, values[SIMPLIFY_EQ_KEY])
     else:
         update_progress_message(window, 'Updating current graph...')
         graph_needs_updating = get_graph_update_bool()
         curve_label_needs_updating = get_curve_label_update_bool()
         analytics_needs_updating = get_analytics_update_bool()
         derivative_label_needs_updating = get_derivative_label_update_bool()
-        if graph_needs_updating:
-            update_graph_section(values, window)
-        if curve_label_needs_updating:
-            update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         if analytics_needs_updating:
             update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
             update_analytics_section(window, values)
         if derivative_label_needs_updating:
             update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
+        if graph_needs_updating:
+            update_graph_section(values, window)
+        if curve_label_needs_updating:
+            update_curve_label(window, values[SIMPLIFY_EQ_KEY])
     update_progress_message(window, 'Done!')
     window.refresh()
     update_controls(window, disabled = False)
@@ -67,9 +66,9 @@ def _handle_event(window, values, event) -> None:
         switch_plot_roots_bool()
     elif event is PLOT_STATIONARY_POINTS_KEY:
         switch_plot_stat_points_bool()
-    elif event is PLOT_STAT_INFLEC_POINTS:
+    elif event is PLOT_STAT_INFLEC_POINTS_KEY:
         switch_plot_stat_inflec_bool()
-    elif event is PLOT_NON_STAT_INFLEC_POINTS:
+    elif event is PLOT_NON_STAT_INFLEC_POINTS_KEY:
         switch_plot_nonstat_inflec_bool()
     elif event is DISPLAY_AS_DECIMALS_KEY:
         switch_display_as_decimals_bool()

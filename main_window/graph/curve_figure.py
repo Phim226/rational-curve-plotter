@@ -41,15 +41,59 @@ def adjust_axes():
     ax.yaxis.set_ticks_position('left')
     ax.spines['left'].set_position(('data',0))
 
+def _draw_points(values, rational_function):
+    plot_roots = values[PLOT_ROOTS_KEY]
+    plot_stat_points = values[PLOT_STATIONARY_POINTS_KEY]
+    plot_stat_inflec_points = values[PLOT_STAT_INFLEC_POINTS_KEY]
+    plot_nonstat_inflec_points = values[PLOT_NON_STAT_INFLEC_POINTS_KEY]
+    if plot_roots:
+        roots = rational_function.roots
+        for root in roots:
+            if roots.index(root)==0:
+                cplot.plot_point((root, 0), 'magenta', 'Root')
+            else:
+                cplot.plot_point((root, 0), 'magenta')
+    if plot_stat_points:
+        minima = rational_function.stat_points.get('Minima')
+        maxima = rational_function.stat_points.get('Maxima')
+        for minimum in minima:
+            if minima.index(minimum)==0:
+                cplot.plot_point(minimum, 'green', 'Local minimum')
+            else:
+                cplot.plot_point(minimum, 'green')
+        for maximum in maxima:
+            if maxima.index(maximum)==0:
+                cplot.plot_point(maximum, 'red', 'Local maximum')
+            else:
+                cplot.plot_point(maximum, 'red')
+    if plot_stat_inflec_points:
+        stat_inflec_points = rational_function.stat_points.get('Stationary inflection points')
+        for stat_inflec in stat_inflec_points:
+            if stat_inflec_points.index(stat_inflec)==0:
+                cplot.plot_point(stat_inflec, 'orange', 'Stationary inflection point')
+            else:
+                cplot.plot_point(stat_inflec, 'orange')
+    if plot_nonstat_inflec_points:
+        nonstat_inflec_points = rational_function.inflection_points
+        for nonstat_inflec in nonstat_inflec_points:
+            if nonstat_inflec_points.index(nonstat_inflec)==0:
+                cplot.plot_point(nonstat_inflec, 'purple', 'Non-stationary inflection point')
+            else:
+                cplot.plot_point(nonstat_inflec, 'purple')
+
 def build_curve_figure(values):
     plt.close() #previous figure needs to be closed explicitly otherwise matplotlib stores each generated plot in memory. A runtime warning will appear after 20 graphs are plotted if they aren't closed
     plt.figure(figsize=(10, 6), dpi=80)#figsize sets width/height in inches, dpi is figure resolution in inches (dots-per-inch or pixels-per-inch)
     adjust_axes()
     cplot.define_global_variables()
+    rational_function = coi.rational_function
+    _draw_points(values, rational_function)
     plot_asmyptotes = values[PLOT_ASYMP_KEY]
-    if plot_asmyptotes and not coi.rational_function.reduces_to_constant:
+    if plot_asmyptotes and not rational_function.reduces_to_constant:
         cplot.plot_asymptotes(values[PLOT_CURV_ASYMP_KEY])
-    cplot.plot_curve()
+    cplot.plot_curve(plot_derivative=False)
+    if values[PLOT_DERIVATIVE_KEY]:
+        cplot.plot_curve(plot_derivative=True)
     plt.grid()
     plt.legend(loc='upper left')
     plt.subplots_adjust(left = 0.0, right = 1.0, bottom = 0.0, top = 1.0) #removes white border around graph

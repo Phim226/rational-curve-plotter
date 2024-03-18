@@ -53,15 +53,17 @@ class RationalFunction():
           return self.y_intercept
 
      def calculate_roots(self, decimal_places, show_complex_roots=False):
-          self.roots = sp.solve(self.rational_expression, x)
+          roots = sp.solve(self.rational_expression, x)
           if show_complex_roots:
+               self.roots = roots
                return self.roots
           real_roots =[]
-          for r in self.roots:
+          for r in roots:
                if r.is_real:
                     if decimal_places is not None:
                          r = round(r, decimal_places)
                     real_roots.append(r)
+          self.roots = real_roots
           return real_roots
      
      def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
@@ -75,7 +77,7 @@ class RationalFunction():
           return False
 
      def calc_and_classify_stationary_points(self, decimal_places=None):
-          self.inflection_x_val, self.inflections, self.minima, self.maxima = [], [], [], []
+          self.inflection_x_val, inflections, minima, maxima = [], [], [], []
           num_stat_points=0
           solutions = sp.solve(self.der_expression, x)
           for p in solutions:
@@ -83,17 +85,17 @@ class RationalFunction():
                     value_is_nice = self._is_value_nice(p)
                     second_der_p_value = float(sp.re(self.second_der_evaluator(p)))
                     if np.isclose(second_der_p_value, 0):
-                         self.inflections.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
+                         inflections.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
                          self.inflection_x_val.append(float(sp.re(p)))
                     elif second_der_p_value < 0:
-                         self.maxima.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
+                         maxima.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
                     elif second_der_p_value > 0:
-                         self.minima.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
+                         minima.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
                     num_stat_points +=1
-          stat_points = {'Minima': self.minima, 'Maxima': self.maxima, 'Stationary inflection points': self.inflections}
+          self.stat_points = {'Minima': minima, 'Maxima': maxima, 'Stationary inflection points': inflections}
           print("There are " + str(num_stat_points) + " stationary points")
-          print("Stationary points are: ", stat_points)
-          return stat_points
+          print("Stationary points are: ", self.stat_points)
+          return self.stat_points
      
      def calc_non_stationary_inflection_points(self, decimal_places=None):
           self.inflection_points = []

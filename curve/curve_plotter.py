@@ -75,14 +75,16 @@ def plot_asymptotes(plot_curv_asymps) -> None:
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
 
-def _plot_graph_section(x_min, x_max, eval, domains, data_points = data_points) -> None:
+def _plot_graph_section(x_min, x_max, eval, domains, colour, data_points = data_points, label = None) -> None:
     X = np.linspace(x_min+delta, x_max-delta, data_points)
-    plt.plot(X, eval(X), color="black",  linewidth=2, linestyle="-")
+    plt.plot(X, eval(X), color=colour,  linewidth=2, linestyle="-", label = label)
     domains.append(X)
 
-def plot_curve() -> None:
+def plot_curve(plot_derivative) -> None:
     _adjust_xaxis()
-    eval = rational_function.function_evaluator
+    eval = rational_function.function_evaluator if not plot_derivative else rational_function.der_evaluator
+    colour = 'black' if not plot_derivative else 'blue'
+    label = None if not plot_derivative else 'Derivative'
     reduces_to_constant = rational_function.reduces_to_constant
     domains = []
     x_min = x_lims[0]
@@ -90,11 +92,14 @@ def plot_curve() -> None:
         if discontinuities:
             #Graph has to be split into various separate sections to account for vertical asymptotes
             for d in discontinuities:
-                _plot_graph_section(x_min, d, eval, domains) #sections before last discontinuity
+                _plot_graph_section(x_min, d, eval, domains, colour) #sections before last discontinuity
                 x_min = d
-            _plot_graph_section(d, x_lims[1], eval, domains) #section after last discontinuity
+            _plot_graph_section(d, x_lims[1], eval, domains, colour, label = label) #section after last discontinuity
         else:
-            _plot_graph_section(x_lims[0], x_lims[1], eval, domains)
+            _plot_graph_section(x_lims[0], x_lims[1], eval, domains, colour, label = label)
     else:
-        _plot_graph_section(x_lims[0], x_lims[1], eval, domains, 2)
+        _plot_graph_section(x_lims[0], x_lims[1], eval, domains, colour, 2 , label = label)
     _adjust_yaxis(domains, eval, reduces_to_constant)
+
+def plot_point(point, colour, label = None) -> None:
+    plt.scatter(point[0], point[1], color = colour, label = label)

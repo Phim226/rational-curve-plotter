@@ -52,11 +52,11 @@ def _build_misc_options():
          sg.Checkbox('Exclude graphs that reduce to a constant', default = True, key = EXCLUDE_CONSTANT_KEY)],
         [sg.Checkbox('Plot asymptotes', default = True, enable_events=True, key=PLOT_ASYMP_KEY), 
          sg.Checkbox('Include curvilinear asymptotes', default = False, enable_events = True, key=PLOT_CURV_ASYMP_KEY, tooltip=CURVE_ASYM_TIP)],
-        [sg.Checkbox('Plot derivate (nw)', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
-         sg.Checkbox('Plot roots (nw)', default = False, enable_events = True, key = PLOT_ROOTS_KEY),
-         sg.Checkbox('Plot stationary points (nw)', default = False, enable_events = True, key = PLOT_STATIONARY_POINTS_KEY)],
-        [sg.Checkbox('Plot stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS_KEY),
-         sg.Checkbox('Plot non-stationary inflection points (nw)', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS_KEY)]
+        [sg.Checkbox('Plot derivate', default = False, enable_events = True, key = PLOT_DERIVATIVE_KEY),
+         sg.Checkbox('Plot roots', default = False, enable_events = True, key = PLOT_ROOTS_KEY),
+         sg.Checkbox('Plot stationary points', default = False, enable_events = True, key = PLOT_STATIONARY_POINTS_KEY)],
+        [sg.Checkbox('Plot stationary inflection points', default = False, enable_events = True, key = PLOT_STAT_INFLEC_POINTS_KEY),
+         sg.Checkbox('Plot non-stationary inflection points', default = False, enable_events = True, key = PLOT_NON_STAT_INFLEC_POINTS_KEY)]
     ])
 
 def _build_analytics_options():
