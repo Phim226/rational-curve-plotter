@@ -16,7 +16,6 @@ def build_poly_exp_from_roots(roots):
 
 def get_coeffs_from_roots(roots):
     exp = build_poly_exp_from_roots(roots)
-    print(exp)
     poly = sp.Poly(exp, x)
     coeffs = [int(c) for c in poly.all_coeffs()]
     return coeffs
