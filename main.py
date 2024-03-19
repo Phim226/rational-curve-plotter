@@ -27,7 +27,6 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
                     update_progress_message(window, 'Can`t generator graph: Coefficients haven`t been entered')
                     window.refresh()
                     update_controls(window, disabled = False)
-                    reset_update_bools()
                     return 
                 initialise_manual_curve_objects(values, numerator_coefficients=numerator_coefficients, denominator_coefficients=denominator_coefficients)
             else:
@@ -36,7 +35,6 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
                     update_progress_message(window, 'Can`t generator graph: Roots haven`t been entered')
                     window.refresh()
                     update_controls(window, disabled = False)
-                    reset_update_bools()
                     return 
                 initialise_manual_curve_objects(values, numerator_roots=numerator_roots, denominator_roots=denominator_roots)
         update_progress_message(window, 'Generating and plotting next graph...')
