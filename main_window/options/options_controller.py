@@ -25,6 +25,7 @@ def _switch_random_options(window, disabled) -> None:
     window[RANDOM_DEN_DEG_SPIN_KEY].update(disabled = disabled)
     window[RANDOM_DEN_DEG_TEXT_KEY].update(text_color = disabled_colour if disabled else 'white')
     window[RANDOM_FORCE_DEN_DEG_KEY].update(disabled = disabled)
+    window[EXCLUDE_CONSTANT_KEY].update(disabled = disabled)
 
 def _switch_manual_options(window, disabled) -> None:
     window[MANUAL_COEFFICIENTS_KEY].update(disabled = disabled)
@@ -57,6 +58,12 @@ def switch_rand_roots(window, values) -> None:
 
 def switch_rand_coeffs(window, values) -> None:
     window[RANDOM_COEFFICIENTS_KEY].update(value = not values[RANDOM_ROOTS_KEY])
+
+def switch_manual_roots(window, values) -> None:
+    window[MANUAL_ROOTS_KEY].update(value = not values[MANUAL_COEFFICIENTS_KEY])
+
+def switch_manual_coeffs(window, values) -> None:
+    window[MANUAL_COEFFICIENTS_KEY].update(value = not values[MANUAL_ROOTS_KEY])
 
 def reset_update_bools() -> None:
     global simplify_has_changed, plot_asymps_has_changed, include_curv_has_changed, plot_deriv_has_changed, plot_roots_has_changed, plot_stat_points_has_changed
