@@ -41,5 +41,7 @@ def update_curve_label(window, label_is_simplified):
 
 def update_derivative_label(window, display_der_as_fraction, latex_is_simplified):
     key = DERIVATIVE_LABEL_KEY
-    latex = coi.rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
-    _build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.0)
+    rational = coi.rational_function
+    exp = rational.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational.der_expression
+    latex = rational.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
+    _build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2)
