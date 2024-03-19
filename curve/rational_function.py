@@ -10,6 +10,7 @@ class RationalFunction():
           self.rational_expression = numerator.symbolic_expression/denominator.symbolic_expression
           self.rational_expression_simp = sp.simplify(self.rational_expression)
           self.der_expression = sp.diff(self.rational_expression, x)
+          self.der_expression_as_fraction = self._calculate_der_expression_as_fraction()
           self.second_der_expression = sp.diff(self.der_expression, x)
           self.reduces_to_constant = self._check_if_function_reduces_to_constant(self.rational_expression)
           if self.reduces_to_constant:
