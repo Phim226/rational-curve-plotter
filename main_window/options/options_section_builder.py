@@ -28,7 +28,7 @@ def _build_random_options():
 
 def _build_manual_options():
     return sg.Column([
-        [sg.Checkbox('Input curve parameters manually \n (all options non-functional)', default = False, enable_events=True, key=MANUAL_GEN_KEY)],
+        [sg.Checkbox('Input curve parameters manually', default = False, enable_events=True, key=MANUAL_GEN_KEY)],
         [sg.Checkbox('Input coefficients', default = True, disabled = MANUAL_DISABLED_ON_STARTUP, enable_events=True, key = MANUAL_COEFFICIENTS_KEY),
          sg.Checkbox('Input roots', default = False, disabled = MANUAL_DISABLED_ON_STARTUP, enable_events=True, key = MANUAL_ROOTS_KEY)],
         [sg.Column(layout =[

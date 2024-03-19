@@ -2,13 +2,14 @@ from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section, configure_toolbar_buttons
 from main_window.curve_label_display.curve_label_figure import update_curve_label, update_derivative_label
 from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
-from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, 
-                                                    switch_rand_roots, reset_update_bools, switch_simplify_bool, switch_plot_asymps_bool, switch_include_curv_bool,
+from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots,
+                                                    switch_manual_roots, switch_manual_coeffs, reset_update_bools, switch_simplify_bool, switch_plot_asymps_bool, switch_include_curv_bool,
                                                     switch_plot_deriv_bool, switch_plot_roots_bool, switch_plot_stat_points_bool, switch_plot_stat_inflec_bool,
                                                     switch_plot_nonstat_inflec_bool, switch_display_as_decimals_bool, switch_decimal_places_bool, switch_deriv_as_fraction_bool, 
                                                     switch_simplify_der_eq_bool, get_graph_update_bool, get_curve_label_update_bool, get_analytics_update_bool, get_derivative_label_update_bool)
 from main_window.graph.graph_section_controller import update_controls, update_progress_message, update_visibility_of_graph_section
-from curve.curve_objects_initialiser import initialise_curve_objects
+from curve.curve_objects_initialiser import initialise_curve_objects, initialise_manual_curve_objects
+from main_window.options.manual_input_popup import manual_popup, get_coefficients, get_roots
 from main_window.element_keys import *
 import PySimpleGUI as sg
 
@@ -17,7 +18,27 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
     update_controls(window, disabled = True)
     window.refresh() #refreshing the window prevents click buffering on disabled buttons
     if not is_updating:
-        initialise_curve_objects(values)
+        if values[RANDOM_GEN_KEY]:
+            initialise_curve_objects(values)
+        else:
+            if values[MANUAL_COEFFICIENTS_KEY]:
+                numerator_coefficients, denominator_coefficients = get_coefficients()
+                if (numerator_coefficients is None) or (denominator_coefficients is None):
+                    update_progress_message(window, 'Can`t generator graph: Coefficients haven`t been entered')
+                    window.refresh()
+                    update_controls(window, disabled = False)
+                    reset_update_bools()
+                    return 
+                initialise_manual_curve_objects(values, numerator_coefficients=numerator_coefficients, denominator_coefficients=denominator_coefficients)
+            else:
+                numerator_roots, denominator_roots = get_roots()
+                if (numerator_roots is None) or (denominator_roots is None):
+                    update_progress_message(window, 'Can`t generator graph: Roots haven`t been entered')
+                    window.refresh()
+                    update_controls(window, disabled = False)
+                    reset_update_bools()
+                    return 
+                initialise_manual_curve_objects(values, numerator_roots=numerator_roots, denominator_roots=denominator_roots)
         update_progress_message(window, 'Generating and plotting next graph...')
         update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
@@ -78,6 +99,15 @@ def _handle_event(window, values, event) -> None:
         switch_deriv_as_fraction_bool()
     elif event is SIMPLIFY_DER_EQ_KEY:
         switch_simplify_der_eq_bool()
+    elif event is MANUAL_COEFFICIENTS_KEY:
+        switch_manual_roots(window, values)
+    elif event is MANUAL_ROOTS_KEY:
+        switch_manual_coeffs(window, values)
+    elif event is INPUT_VALUES_KEY:
+        if values[MANUAL_ROOTS_KEY] and ((values[MANUAL_DEN_DEG_SPIN_KEY]==0)or(values[MANUAL_NUM_DEG_SPIN_KEY]==0)):
+            sg.popup('The degree of the numerator and denominator can`t be 0 when inputting roots')
+        else:
+            manual_popup(values)
     elif event is SHOW_GRAPH_KEY:
         update_visibility_of_graph_section(window, visible = True)
     elif event is HIDE_GRAPH_KEY:
