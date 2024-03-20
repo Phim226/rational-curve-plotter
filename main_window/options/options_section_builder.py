@@ -68,11 +68,7 @@ def _build_analytics_options():
         [sg.T('Decimal places', key = DECIMAL_PLACES_KEY, tooltip = DECIMAL_PLACES_TIP), 
          sg.Spin([i for i in range(0,9)], initial_value=2, enable_events = True, key = DECIMAL_PLACES_SPIN_KEY, tooltip = DECIMAL_PLACES_TIP)]
     ])
-
-#TODO: include options for manually inputting coefficients
-#TODO: add option to plot interesting points (roots, y intercept, stationary, inflection)
-#TODO: add option to plot derivative alongside regular curve
-#TODO: add option for manually inputting roots 
+ 
 def build_options_section():
     return sg.Frame('Curve Generation Options', 
                             layout = [
