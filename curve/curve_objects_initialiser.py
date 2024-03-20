@@ -21,8 +21,8 @@ def initialise_curve_objects(values) -> None:
     #numerator = RandPolynomial(coefficients=[1,1,1])
     #denominator = RandPolynomial(coefficients=[1,1,1])
     #rational_function = RationalFunction(numerator, denominator)
-    print("numerator coefficients: ", numerator.coefficients)
-    print("denominator coefficients: ", denominator.coefficients)
+    print(f"{numerator.coefficients = }")
+    print(f"{denominator.coefficients = }")
 
 def initialise_manual_curve_objects(values, numerator_coefficients = [], numerator_roots = [], denominator_coefficients = [], denominator_roots = []):
     global numerator, denominator, rational_function
@@ -33,5 +33,5 @@ def initialise_manual_curve_objects(values, numerator_coefficients = [], numerat
         numerator = RandPolynomial(real_roots=numerator_roots)
         denominator = RandPolynomial(real_roots=denominator_roots)
     rational_function = RationalFunction(numerator, denominator)
-    print("numerator coefficients: ", numerator.coefficients)
-    print("denominator coefficients: ", denominator.coefficients)
+    print(f"{numerator.coefficients = }")
+    print(f"{denominator.coefficients = }")

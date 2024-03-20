@@ -26,8 +26,8 @@ class RationalFunction():
      
      def _generate_numerator_lambda(self, numerator, t):
           n = 0
-          for c in numerator:
-               n += c*(t**(len(numerator)-numerator.index(c)-1))
+          for coeff in numerator:
+               n += coeff*(t**(len(numerator)-numerator.index(coeff)-1))
           return n
 
      def _find_discontinuities(self, rational_expression):
@@ -104,8 +104,8 @@ class RationalFunction():
                          minima.append(self._get_point_on_curve(p, decimal_places, value_is_nice))
                     num_stat_points +=1
           self.stat_points = {'Minima': minima, 'Maxima': maxima, 'Stationary inflection points': inflections}
-          print("There are " + str(num_stat_points) + " stationary points")
-          print("Stationary points are: ", self.stat_points)
+          print(f'There {'is' if num_stat_points==1 else 'are'} {num_stat_points} stationary point{'' if num_stat_points==1 else 's'}')
+          print(f'Stationary points are: {self.stat_points}')
           return self.stat_points
      
      def calc_non_stationary_inflection_points(self, decimal_places=None):
@@ -120,8 +120,8 @@ class RationalFunction():
                     else:
                          self.inflection_points.append(self._get_point_on_curve(p.evalf(), decimal_places))
                     num_inflection_points+=1
-          print("There are " + str(num_inflection_points) + " non-stationary inflection points")
-          print("Non-stationary inflection points are: ", self.inflection_points)
+          print(f'There {'is' if num_inflection_points==1 else 'are'} {num_inflection_points} non-stationary inflection point{'' if num_inflection_points==1 else 's'}')
+          print(f'Non-stationary inflection points are: {self.inflection_points}')
           return self.inflection_points
      
      def calculate_derivative_coefficients(self, num_coeffs, den_coeffs):
