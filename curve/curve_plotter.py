@@ -60,11 +60,11 @@ def plot_asymptotes(plot_curv_asymps) -> None:
     num_coeffs, num_degree = numerator.coefficients, numerator.degree
     den_coeffs, den_degree = denominator.coefficients, denominator.degree
     for z in discontinuities:
-        plt.axvline(z, c = "red", ls = "dashed")
+        plt.axvline(z, color = "red", linestyle = "dashed")
     if num_degree<den_degree:
-        plt.axhline(0, c = "red", ls = "dashed")
+        plt.axhline(0, color = "red", linestyle = "dashed")
     elif num_degree==den_degree:
-        plt.axhline(num_coeffs[0]/den_coeffs[0], c = "red", ls = "dashed")
+        plt.axhline(num_coeffs[0]/den_coeffs[0], color = "red", linestyle = "dashed")
     elif num_degree>den_degree:
         quotient = np.polydiv(num_coeffs, den_coeffs)[0]
         A = lambda X : np.polyval(quotient, X)
@@ -74,6 +74,7 @@ def plot_asymptotes(plot_curv_asymps) -> None:
         elif plot_curv_asymps:
             X = np.linspace(x_lims[0], x_lims[1], data_points)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
+    plt.plot([], [], color = 'red', linestyle='dashed', label = 'Asymptotes')
 
 def _plot_graph_section(x_min, x_max, eval, domains, colour, data_points = data_points, label = None) -> None:
     X = np.linspace(x_min+delta, x_max-delta, data_points)
