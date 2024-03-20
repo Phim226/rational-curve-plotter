@@ -77,7 +77,51 @@ def update_analytics_section_visiblity(window, visible) -> None:
 
 def update_derivative_label(window, display_der_as_fraction, latex_is_simplified):
     key = DERIVATIVE_LABEL_KEY
-    rational = coi.rational_function
-    exp = rational.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational.der_expression
-    latex = rational.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
-    build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2)
+    exp = rational_function.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational_function.der_expression
+    latex = rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
+    build_label(window, key, 'y', latex, fontsize=12, fig_height=0.5, fig_width=3.2)
+
+def update_asymptote_labels(window, values):
+    window[ASYMP_COLUMN_KEY].update(visible = False)
+    plot_asymptotes = values[PLOT_ASYMP_KEY]
+    inc_curvilinear = values[PLOT_CURV_ASYMP_KEY]
+    asymp_is_vert = rational_function.asymp_is_vert
+    asymp_is_zero_hor = rational_function.asymp_is_zero_hor
+    asymp_is_non_zero_hor = rational_function.asymp_is_non_zero_hor
+    asymp_is_oblique = rational_function.asymp_is_oblique
+    asymp_is_curv = rational_function.asymp_is_curv
+    if plot_asymptotes:
+        window[ASYMPTOTES_FRAME_KEY].update(visible = True)
+        if asymp_is_vert:
+            window[VERTICAL_ASYMP_TEXT_KEY].unhide_row()
+            window[VERTICAL_ASYMP_KEY].unhide_row()
+        else:
+            window[VERTICAL_ASYMP_TEXT_KEY].hide_row()
+            window[VERTICAL_ASYMP_KEY].hide_row()
+        if asymp_is_zero_hor or asymp_is_non_zero_hor:
+            window[HORIZONTAL_ASYMP_TEXT_KEY].unhide_row()
+            window[HORIZONTAL_ASYMP_KEY].unhide_row()
+            window[OBLIQUE_ASYMP_KEY].hide_row()
+            window[OBLIQUE_ASYMP_TEXT_KEY].hide_row()
+            window[CURVILINEAR_ASYMP_KEY].hide_row()
+            window[CURVILINEAR_ASYMP_TEXT_KEY].hide_row()
+        elif asymp_is_oblique:
+            window[OBLIQUE_ASYMP_TEXT_KEY].unhide_row()
+            window[OBLIQUE_ASYMP_KEY].unhide_row()
+            window[HORIZONTAL_ASYMP_TEXT_KEY].hide_row()
+            window[HORIZONTAL_ASYMP_KEY].hide_row()
+            window[CURVILINEAR_ASYMP_KEY].hide_row()
+            window[CURVILINEAR_ASYMP_TEXT_KEY].hide_row()
+        elif asymp_is_curv and not inc_curvilinear:
+            window[CURVILINEAR_ASYMP_TEXT_KEY].unhide_row()
+            window[CURVILINEAR_ASYMP_KEY].unhide_row()
+            window[HORIZONTAL_ASYMP_TEXT_KEY].hide_row()
+            window[HORIZONTAL_ASYMP_KEY].hide_row()
+            window[OBLIQUE_ASYMP_KEY].hide_row()
+            window[OBLIQUE_ASYMP_TEXT_KEY].hide_row()
+    else:
+        window[ASYMPTOTES_FRAME_KEY].update(visible = False)
+    window[ASYMP_COLUMN_KEY].update(visible = True)
+        
+
+    
