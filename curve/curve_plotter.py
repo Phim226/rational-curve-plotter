@@ -20,10 +20,10 @@ def define_global_variables() -> None:
 Adjusts the limits of the y-axis depending on the minimum and maximum values of the curve, or sets them to a default of -10 and 10
 """
 #TODO: improve decision making about initial y and x axis limits so that, apart from extreme cases, all graph sections are visible when first displaying the graph
-def _adjust_yaxis(domains, eval, reduces_to_cosntant) -> None:
+def _adjust_yaxis(domains, eval, reduces_to_constant) -> None:
     ylim_low = -10.0
     ylim_high = 10.0
-    if reduces_to_cosntant:
+    if reduces_to_constant:
         plt.ylim((ylim_low,ylim_high))
     else:
         eval_min = min(eval(i).min() for i in domains)
