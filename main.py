@@ -39,10 +39,10 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
                 initialise_manual_curve_objects(values, numerator_roots=numerator_roots, denominator_roots=denominator_roots)
         update_progress_message(window, 'Generating and plotting next graph...')
         update_curve_label(window, values[SIMPLIFY_EQ_KEY])
+        update_graph_section(values, window)
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
         update_analytics_section(window, values)
         update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
-        update_graph_section(values, window)
     else:
         update_progress_message(window, 'Updating current graph...')
         graph_needs_updating = get_graph_update_bool()
@@ -51,13 +51,13 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
         derivative_label_needs_updating = get_derivative_label_update_bool()
         if curve_label_needs_updating:
             update_curve_label(window, values[SIMPLIFY_EQ_KEY])
+        if graph_needs_updating:
+            update_graph_section(values, window)
         if analytics_needs_updating:
             update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
             update_analytics_section(window, values)
         if derivative_label_needs_updating:
             update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
-        if graph_needs_updating:
-            update_graph_section(values, window)
     update_progress_message(window, 'Done!')
     window.refresh()
     update_controls(window, disabled = False)
