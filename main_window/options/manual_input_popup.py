@@ -9,10 +9,10 @@ denominator_coefficients = None
 denominator_roots = None
 
 def _format_popup(popup_type_text, numerator_inputs, denominator_inputs):
-    return sg.Window('Input ' + popup_type_text,
-                     [[sg.Text('Numerator ' + popup_type_text, font = 'Helvetica 9 bold underline')],
+    return sg.Window(f'Input {popup_type_text}',
+                     [[sg.Text(f'Numerator {popup_type_text}', font = 'Helvetica 9 bold underline')],
                       numerator_inputs,
-                      [sg.Text('Denominator ' + popup_type_text, font = 'Helvetica 9 bold underline')],
+                      [sg.Text(f'Denominator {popup_type_text}', font = 'Helvetica 9 bold underline')],
                       denominator_inputs,
                       [sg.OK(), sg.Cancel()]
                       ])
@@ -25,7 +25,7 @@ def _format_inputs(degree, is_num, is_super):
     gen_type = 'COEFFICIENTS' if is_super else 'ROOTS'
     for i in ran:
             inputs.append(sg.Text(f'x'+script[i]+':'))
-            inputs.append(sg.Input('', size = 4, enable_events=True, key = 'INPUT'+frac_component+gen_type+str(i)))
+            inputs.append(sg.Input('', size = 4, enable_events=True, key = f'INPUT{frac_component}{gen_type}{i}'))
     return inputs
 
 def _set_coefficients(numerator_values, denominator_values):
@@ -60,7 +60,7 @@ def manual_popup(values):
         elif event.startswith('INPUT'):
             if not vals[event]=='':
                 if vals[event][-1] not in ('0123456789- '):
-                    sg.popup('Only integer '+gen_type+' are allowed')
+                    sg.popup(f'Only integer {gen_type} are allowed')
                     window[event].update(vals[event][:-1])
         elif event == 'OK': 
             numerator_values, denominator_values = [],[]
@@ -69,14 +69,14 @@ def manual_popup(values):
             for v in vals:
                 if vals.get(v)=='':
                     all_values_entered = False
-                    sg.popup('Not all '+gen_type+' have been entered')
+                    sg.popup(f'Not all {gen_type} have been entered')
                     break
                 else:
                     try:
                         value = int(vals.get(v))
                     except:
                         all_values_entered = False
-                        sg.popup('Some '+gen_type+' are in an invalid format')
+                        sg.popup(f'Some {gen_type} are in an invalid format')
                         break
                     if _add_value_to_numerator(numerator_degree, is_coefficients, i):
                         numerator_values.append(value)
