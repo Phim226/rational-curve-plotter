@@ -1,7 +1,7 @@
 from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section, configure_toolbar_buttons
-from main_window.curve_label_display.curve_label_figure import update_curve_label, update_derivative_label
-from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity
+from main_window.curve_label_display.curve_label_figure import update_curve_label
+from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity, update_derivative_label
 from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots,
                                                     switch_manual_roots, switch_manual_coeffs, reset_update_bools, switch_simplify_bool, switch_plot_asymps_bool, switch_include_curv_bool,
                                                     switch_plot_deriv_bool, switch_plot_roots_bool, switch_plot_stat_points_bool, switch_plot_stat_inflec_bool,

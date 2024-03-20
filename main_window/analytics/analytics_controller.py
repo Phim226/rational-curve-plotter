@@ -1,4 +1,5 @@
 from main_window.element_keys import *
+from main_window.equation_label_plotter import build_label
 import curve.curve_objects_initialiser as coi
 
 #TODO: include options for exact or approximate values 
@@ -73,3 +74,10 @@ def update_analytics_section_visiblity(window, visible) -> None:
     window[DERIVATIVE_FRAME_KEY].update(visible = visible)
     window[Y_INTERCEPT_FRAME_KEY].update(visible = visible)
     window[ASYMPTOTES_FRAME_KEY].update(visible = visible)
+
+def update_derivative_label(window, display_der_as_fraction, latex_is_simplified):
+    key = DERIVATIVE_LABEL_KEY
+    rational = coi.rational_function
+    exp = rational.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational.der_expression
+    latex = rational.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
+    build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2)
