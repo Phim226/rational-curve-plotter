@@ -1,18 +1,18 @@
 from main_window.main_window_builder import build_main_window
 from main_window.graph.curve_figure import update_graph_section, configure_toolbar_buttons
 from main_window.curve_label_display.curve_label_figure import update_curve_label
-from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity, update_derivative_label
+from main_window.analytics.analytics_controller import update_analytics_section, update_analytics_section_visiblity, update_derivative_label, update_asymptote_labels
 from main_window.options.options_controller import (switch_random_and_manual_options, switch_curvilinear_asymptote_button, switch_rand_coeffs, switch_rand_roots,
                                                     switch_manual_roots, switch_manual_coeffs, reset_update_bools, switch_simplify_bool, switch_plot_asymps_bool, switch_include_curv_bool,
                                                     switch_plot_deriv_bool, switch_plot_roots_bool, switch_plot_stat_points_bool, switch_plot_stat_inflec_bool,
                                                     switch_plot_nonstat_inflec_bool, switch_display_as_decimals_bool, switch_decimal_places_bool, switch_deriv_as_fraction_bool, 
-                                                    switch_simplify_der_eq_bool, get_graph_update_bool, get_curve_label_update_bool, get_analytics_update_bool, get_derivative_label_update_bool)
+                                                    switch_simplify_der_eq_bool, get_graph_update_bool, get_curve_label_update_bool, get_analytics_update_bool, 
+                                                    get_derivative_label_update_bool, get_asymps_label_update_bool)
 from main_window.graph.graph_section_controller import update_controls, update_progress_message, update_visibility_of_graph_section
 from curve.curve_objects_initialiser import initialise_curve_objects, initialise_manual_curve_objects
 from main_window.options.manual_input_popup import manual_popup, get_coefficients, get_roots
 from main_window.element_keys import *
 import PySimpleGUI as sg
-
 
 def _generate_graph_and_analytics(window, values, is_updating) -> None:
     update_controls(window, disabled = True)
@@ -43,12 +43,14 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
         update_analytics_section_visiblity(window, visible = values[SHOW_NEXT_ANALYTICS_KEY])
         update_analytics_section(window, values)
         update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
+        update_asymptote_labels(window, values)
     else:
         update_progress_message(window, 'Updating current graph...')
         graph_needs_updating = get_graph_update_bool()
         curve_label_needs_updating = get_curve_label_update_bool()
         analytics_needs_updating = get_analytics_update_bool()
         derivative_label_needs_updating = get_derivative_label_update_bool()
+        asymp_labels_need_updating = get_asymps_label_update_bool()
         if curve_label_needs_updating:
             update_curve_label(window, values[SIMPLIFY_EQ_KEY])
         if graph_needs_updating:
@@ -58,6 +60,8 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
             update_analytics_section(window, values)
         if derivative_label_needs_updating:
             update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
+        if asymp_labels_need_updating:
+            update_asymptote_labels(window, values)
     update_progress_message(window, 'Done!')
     window.refresh()
     update_controls(window, disabled = False)
