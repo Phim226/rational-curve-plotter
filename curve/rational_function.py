@@ -5,25 +5,47 @@ import numpy as np
 class RationalFunction():
 
      def __init__(self, numerator, denominator):
-          self.numerator = numerator
-          self.denominator = denominator
-          self.rational_expression = numerator.symbolic_expression/denominator.symbolic_expression
+          self.numerator_exp = numerator.symbolic_expression
+          self.denominator_exp = denominator.symbolic_expression
+          num_coeffs = numerator.coefficients
+          den_coeffs = denominator.coefficients
+          num_degree = numerator.degree
+          den_degree = denominator.degree
+          if num_degree<den_degree:
+               self._set_asymp_bools(True, False, False, False)
+          elif num_degree==den_degree:
+               self._set_asymp_bools(False, True, False, False)
+          else:
+               quotient = np.polydiv(num_coeffs, den_coeffs)[0]
+               self.asymptote_lambda = lambda X : np.polyval(quotient, X)
+               if num_degree - den_degree == 1:
+                    self._set_asymp_bools(False, False, True, False)
+               else:
+                    self._set_asymp_bools(False, False, False, True)
+          self.rational_expression = self.numerator_exp/self.denominator_exp
           self.rational_expression_simp = sp.simplify(self.rational_expression)
           self.der_expression = sp.diff(self.rational_expression, x)
-          self.der_expression_as_fraction = self._calculate_der_expression_as_fraction()
+          self.der_expression_as_fraction = self._calculate_der_expression_as_fraction(self.numerator_exp, self.denominator_exp)
           self.second_der_expression = sp.diff(self.der_expression, x)
           self.reduces_to_constant = self._check_if_function_reduces_to_constant(self.rational_expression)
           if self.reduces_to_constant:
-               self.function_evaluator = lambda t : (numerator.coefficients[0]*t)/(denominator.coefficients[0]*t)
-          elif not self.reduces_to_constant and denominator.symbolic_expression.is_real:
-               self.function_evaluator = lambda t : (self._generate_numerator_lambda(numerator.coefficients, t))/(denominator.coefficients[0])
+               self.function_evaluator = lambda t : (num_coeffs[0]*t)/(den_coeffs[0]*t)
+          elif not self.reduces_to_constant and self.denominator_exp.is_real:
+               self.function_evaluator = lambda t : (self._generate_numerator_lambda(num_coeffs, t))/(den_coeffs[0])
           else:
                self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy")
           self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
           self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
-          exp = self.rational_expression if not denominator.symbolic_expression.is_Rational and not denominator.symbolic_expression.is_Add else self.rational_expression_simp
+          exp = self.rational_expression if not self.denominator_exp.is_Rational and not self.denominator_exp.is_Add else self.rational_expression_simp
           self.discontinuities = self._find_discontinuities(exp) if not self.reduces_to_constant else []
+          self.asymp_is_vert = False if not self.discontinuities else True
      
+     def _set_asymp_bools(self, asymp_is_zero_hor, asymp_is_non_zero_hor, asymp_is_oblique, asymp_is_curv):
+          self.asymp_is_zero_hor = asymp_is_zero_hor
+          self.asymp_is_non_zero_hor = asymp_is_non_zero_hor
+          self.asymp_is_oblique = asymp_is_oblique
+          self.asymp_is_curv = asymp_is_curv
+
      def _generate_numerator_lambda(self, numerator, t):
           n = 0
           for coeff in numerator:
@@ -53,11 +75,9 @@ class RationalFunction():
                return True
           return False
 
-     def _calculate_der_expression_as_fraction(self):
-          numerator = self.numerator.symbolic_expression
-          denominator = self.denominator.symbolic_expression
-          der_numerator_exp = sp.expand(sp.diff(numerator)*denominator - sp.diff(denominator)*numerator)
-          der_denominator_exp = denominator*denominator
+     def _calculate_der_expression_as_fraction(self, numerator_exp, denominator_exp):
+          der_numerator_exp = sp.expand(sp.diff(numerator_exp)*denominator_exp - sp.diff(denominator_exp)*numerator_exp)
+          der_denominator_exp = denominator_exp*denominator_exp
           return der_numerator_exp/der_denominator_exp
      
      def calculate_roots(self, decimal_places, show_complex_roots=False):
@@ -133,13 +153,13 @@ class RationalFunction():
           if latex_is_simplified:
                return sp.latex(self.rational_expression_simp)
           elif not latex_is_simplified and self.reduces_to_constant:
-               return r'\frac{' + sp.latex(self.numerator.symbolic_expression) + r'}{' + sp.latex(self.denominator.symbolic_expression) + r'}'
+               return r'\frac{' + sp.latex(self.numerator_exp) + r'}{' + sp.latex(self.denominator_exp) + r'}'
           return sp.latex(self.rational_expression)
 
      def get_derivative_latex(self, display_der_as_fraction, latex_is_simplified):
           if display_der_as_fraction:
-               numerator = self.numerator.symbolic_expression
-               denominator = self.denominator.symbolic_expression
+               numerator = self.numerator_exp
+               denominator = self.denominator_exp
                der_numerator_exp = sp.expand(sp.diff(numerator)*denominator - sp.diff(denominator)*numerator)
                der_denominator_exp = denominator*denominator
                if latex_is_simplified:
