@@ -148,3 +148,6 @@ def get_analytics_update_bool():
 
 def get_derivative_label_update_bool():
     return deriv_as_fraction_has_changed or simplify_der_has_changed
+
+def get_asymps_label_update_bool():
+    return plot_asymps_has_changed or include_curv_has_changed
