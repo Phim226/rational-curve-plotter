@@ -57,18 +57,15 @@ def _adjust_xaxis() -> None:
         plt.xlim((x_lims_init[0],x_lims_init[1]))
 
 def plot_asymptotes(plot_curv_asymps) -> None:
-    num_coeffs, num_degree = numerator.coefficients, numerator.degree
-    den_coeffs, den_degree = denominator.coefficients, denominator.degree
     for z in discontinuities:
         plt.axvline(z, color = "red", linestyle = "dashed")
-    if num_degree<den_degree:
+    if rational_function.asymp_is_zero_hor:
         plt.axhline(0, color = "red", linestyle = "dashed")
-    elif num_degree==den_degree:
+    elif rational_function.asymp_is_non_zero_hor:
         plt.axhline(num_coeffs[0]/den_coeffs[0], color = "red", linestyle = "dashed")
-    elif num_degree>den_degree:
-        quotient = np.polydiv(num_coeffs, den_coeffs)[0]
-        A = lambda X : np.polyval(quotient, X)
-        if num_degree - den_degree==1:
+    else:
+        A = rational_function.asymptote_lambda
+        if rational_function.asymp_is_oblique:
             X = np.linspace(x_lims[0], x_lims[1], 2)
             plt.plot(X, A(X), color="red",  linewidth=1.5, linestyle="dashed")
         elif plot_curv_asymps:
