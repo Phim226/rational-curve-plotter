@@ -24,7 +24,7 @@ def _format_inputs(degree, is_num, is_super):
     script = superscripts if is_super else subscripts
     gen_type = 'COEFFICIENTS' if is_super else 'ROOTS'
     for i in ran:
-            inputs.append(sg.Text(f'x'+script[i]+':'))
+            inputs.append(sg.Text(f'x{script[i]}:'))
             inputs.append(sg.Input('', size = 4, enable_events=True, key = f'INPUT{frac_component}{gen_type}{i}'))
     return inputs
 
