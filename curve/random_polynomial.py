@@ -53,6 +53,13 @@ class RandPolynomial():
                 coeffs = np.fromiter((ran.randint(-10,10) for i in range(range_upper_bound)), int)
         return self._format_coeffs(coeffs.tolist())
             
+    def _build_poly_exp_from_roots(self, roots):
+        exp = 1
+        for r in roots:
+            exp = exp*(x - r)
+        exp = sp.expand(exp)
+        return exp
+
     def _get_coeffs_from_roots(self, roots):
         exp = self._build_poly_exp_from_roots(roots)
         poly = sp.Poly(exp, x)
