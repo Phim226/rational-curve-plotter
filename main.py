@@ -44,6 +44,7 @@ def _generate_graph_and_analytics(window, values, is_updating) -> None:
         update_analytics_section(window, values)
         update_derivative_label(window, values[DERIVATIVE_AS_FRACTION_KEY], values[SIMPLIFY_DER_EQ_KEY])
         update_asymptote_labels(window, values)
+        print(f'{window[ANALYTIC_SEC_KEY].get_size() = }')
     else:
         update_progress_message(window, 'Updating current graph...')
         graph_needs_updating = get_graph_update_bool()

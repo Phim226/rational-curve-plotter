@@ -13,21 +13,27 @@ class RationalFunction():
           den_degree = denominator.degree
           if num_degree<den_degree:
                self._set_asymp_bools(True, False, False, False)
+               self.non_vert_asymp_latex = '0'
           elif num_degree==den_degree:
                self._set_asymp_bools(False, True, False, False)
+               self.non_vert_asymp_latex = sp.latex(sp.simplify(sp.sympify(num_coeffs[0])/sp.sympify(den_coeffs[0])))
           else:
-               quotient = np.polydiv(num_coeffs, den_coeffs)[0]
-               self.asymptote_lambda = lambda X : np.polyval(quotient, X)
+               quotient = sp.div(self.numerator_exp, self.denominator_exp)[0]
+               self.non_vert_asymp_latex = sp.latex(quotient)
+               self.asymptote_lambda = sp.lambdify(x, quotient, "numpy")
                if num_degree - den_degree == 1:
                     self._set_asymp_bools(False, False, True, False)
                else:
                     self._set_asymp_bools(False, False, False, True)
+          
           self.rational_expression = self.numerator_exp/self.denominator_exp
           self.rational_expression_simp = sp.simplify(self.rational_expression)
           self.der_expression = sp.diff(self.rational_expression, x)
           self.der_expression_as_fraction = self._calculate_der_expression_as_fraction(self.numerator_exp, self.denominator_exp)
           self.second_der_expression = sp.diff(self.der_expression, x)
-          self.reduces_to_constant = self._check_if_function_reduces_to_constant(self.rational_expression)
+          
+          self.reduces_to_constant = self.rational_expression_simp.is_real
+          
           if self.reduces_to_constant:
                self.function_evaluator = lambda t : (num_coeffs[0]*t)/(den_coeffs[0]*t)
           elif not self.reduces_to_constant and self.denominator_exp.is_real:
@@ -36,9 +42,16 @@ class RationalFunction():
                self.function_evaluator = sp.lambdify(x, self.rational_expression, "numpy")
           self.der_evaluator = sp.lambdify(x, self.der_expression, "numpy") #"numpy" argument gives lambdify function access to numpy functions backed by compiled C code, which makes execution faster (without ~1microsecond, with~10nanoseconds)
           self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
+          
           exp = self.rational_expression if not self.denominator_exp.is_Rational and not self.denominator_exp.is_Add else self.rational_expression_simp
           self.discontinuities = self._find_discontinuities(exp) if not self.reduces_to_constant else []
+          
           self.asymp_is_vert = False if not self.discontinuities else True
+          if self.asymp_is_vert:
+               vert_asymp_latex = []
+               for d in self.discontinuities:
+                    vert_asymp_latex.append(f'x = {d: .2f}') 
+               self.vert_asymp_latex = vert_asymp_latex
      
      def _set_asymp_bools(self, asymp_is_zero_hor, asymp_is_non_zero_hor, asymp_is_oblique, asymp_is_curv):
           self.asymp_is_zero_hor = asymp_is_zero_hor
@@ -60,10 +73,6 @@ class RationalFunction():
                if r.is_real:
                    discontinuities.append(float(r))
           return sorted(discontinuities)
-
-     #returns True if numerator and denominator cancel each other out and the function reduces to a constant
-     def _check_if_function_reduces_to_constant(self, rational_expression): 
-         return sp.simplify(rational_expression).is_real
      
      def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
           if value_is_nice:

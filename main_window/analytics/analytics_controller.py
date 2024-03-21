@@ -4,10 +4,8 @@ import curve.curve_objects_initialiser as coi
 
 #TODO: include options for exact or approximate values 
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
-#TODO: Display asymptotes 
 
 def _format_points_string(points):
-    string = ''
     first = True
     for point in points:
         if first:
@@ -79,10 +77,9 @@ def update_derivative_label(window, display_der_as_fraction, latex_is_simplified
     key = DERIVATIVE_LABEL_KEY
     exp = rational_function.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational_function.der_expression
     latex = rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
-    build_label(window, key, 'y', latex, fontsize=12, fig_height=0.5, fig_width=3.2)
+    build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2, variable='y')
 
 def update_asymptote_labels(window, values):
-    window[ASYMP_COLUMN_KEY].update(visible = False)
     plot_asymptotes = values[PLOT_ASYMP_KEY]
     inc_curvilinear = values[PLOT_CURV_ASYMP_KEY]
     asymp_is_vert = rational_function.asymp_is_vert
@@ -91,37 +88,35 @@ def update_asymptote_labels(window, values):
     asymp_is_oblique = rational_function.asymp_is_oblique
     asymp_is_curv = rational_function.asymp_is_curv
     if plot_asymptotes:
-        window[ASYMPTOTES_FRAME_KEY].update(visible = True)
         if asymp_is_vert:
-            window[VERTICAL_ASYMP_TEXT_KEY].unhide_row()
-            window[VERTICAL_ASYMP_KEY].unhide_row()
-        else:
-            window[VERTICAL_ASYMP_TEXT_KEY].hide_row()
-            window[VERTICAL_ASYMP_KEY].hide_row()
+            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=0.5, fig_width=1.0)
+        window[VERTICAL_COLUMN_KEY].update(visible = asymp_is_vert)
+        non_vert_asymp_key = None
         if asymp_is_zero_hor or asymp_is_non_zero_hor:
-            window[HORIZONTAL_ASYMP_TEXT_KEY].unhide_row()
-            window[HORIZONTAL_ASYMP_KEY].unhide_row()
-            window[OBLIQUE_ASYMP_KEY].hide_row()
-            window[OBLIQUE_ASYMP_TEXT_KEY].hide_row()
-            window[CURVILINEAR_ASYMP_KEY].hide_row()
-            window[CURVILINEAR_ASYMP_TEXT_KEY].hide_row()
+            window[HORIZONTAL_COLUMN_KEY].update(visible = True)
+            window[OBLIQUE_COLUMN_KEY].update(visible = False)
+            window[CURV_COLUMN_KEY].update(visible = False)
+            non_vert_asymp_key = HORIZONTAL_ASYMP_KEY
+            fig_width = 1.0
         elif asymp_is_oblique:
-            window[OBLIQUE_ASYMP_TEXT_KEY].unhide_row()
-            window[OBLIQUE_ASYMP_KEY].unhide_row()
-            window[HORIZONTAL_ASYMP_TEXT_KEY].hide_row()
-            window[HORIZONTAL_ASYMP_KEY].hide_row()
-            window[CURVILINEAR_ASYMP_KEY].hide_row()
-            window[CURVILINEAR_ASYMP_TEXT_KEY].hide_row()
-        elif asymp_is_curv and not inc_curvilinear:
-            window[CURVILINEAR_ASYMP_TEXT_KEY].unhide_row()
-            window[CURVILINEAR_ASYMP_KEY].unhide_row()
-            window[HORIZONTAL_ASYMP_TEXT_KEY].hide_row()
-            window[HORIZONTAL_ASYMP_KEY].hide_row()
-            window[OBLIQUE_ASYMP_KEY].hide_row()
-            window[OBLIQUE_ASYMP_TEXT_KEY].hide_row()
+            window[OBLIQUE_COLUMN_KEY].update(visible = asymp_is_oblique)
+            window[HORIZONTAL_COLUMN_KEY].update(visible = not asymp_is_oblique)
+            window[CURV_COLUMN_KEY].update(visible = not asymp_is_oblique)
+            non_vert_asymp_key = OBLIQUE_ASYMP_KEY
+            fig_width = 1.0
+        elif asymp_is_curv and inc_curvilinear:
+            window[CURV_COLUMN_KEY].update(visible = asymp_is_curv)
+            window[HORIZONTAL_COLUMN_KEY].update(visible = not asymp_is_curv)
+            window[OBLIQUE_COLUMN_KEY].update(visible = not asymp_is_curv)
+            non_vert_asymp_key = CURVILINEAR_ASYMP_KEY
+            fig_width = 1.5
+        if non_vert_asymp_key is not None:
+            build_label(window, non_vert_asymp_key, rational_function.non_vert_asymp_latex, fontsize=10, fig_height=0.5, fig_width=fig_width, variable = 'y')
     else:
-        window[ASYMPTOTES_FRAME_KEY].update(visible = False)
-    window[ASYMP_COLUMN_KEY].update(visible = True)
+        window[VERTICAL_COLUMN_KEY].update(visible = False)
+        window[CURV_COLUMN_KEY].update(visible = False)
+        window[HORIZONTAL_COLUMN_KEY].update(visible = False)
+        window[OBLIQUE_COLUMN_KEY].update(visible = False)
         
 
     

@@ -4,16 +4,20 @@ import PySimpleGUI as sg
 STARTUP_VISIBILITY = True
 
 def _build_asymptotes_frame():
-    return sg.Frame('Asymptotes', visible = STARTUP_VISIBILITY, key = ASYMPTOTES_FRAME_KEY, layout =[[sg.Column(visible=False, key = ASYMP_COLUMN_KEY, layout = [
-                        [sg.T('Vertical', key = VERTICAL_ASYMP_TEXT_KEY, visible = STARTUP_VISIBILITY, font = 'Helvetica 9 underline bold')],
-                        [sg.Canvas(key = VERTICAL_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(30, 30))],
-                        [sg.T('Horizontal', key = HORIZONTAL_ASYMP_TEXT_KEY, visible = STARTUP_VISIBILITY, font = 'Helvetica 9 underline bold')],
-                        [sg.Canvas(key = HORIZONTAL_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(30, 30))],
-                        [sg.T('Oblique', key = OBLIQUE_ASYMP_TEXT_KEY, visible = STARTUP_VISIBILITY, font = 'Helvetica 9 underline bold')],
-                        [sg.Canvas(key = OBLIQUE_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(30, 30))],
-                        [sg.T('Curvilinear', key = CURVILINEAR_ASYMP_TEXT_KEY, visible = STARTUP_VISIBILITY, font = 'Helvetica 9 underline bold')],
-                        [sg.Canvas(key = CURVILINEAR_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(30, 30))]
-                    ])]])
+    return sg.Frame('Asymptotes', visible = STARTUP_VISIBILITY, key = ASYMPTOTES_FRAME_KEY, layout =[
+                        [sg.pin(sg.Column(visible=False, key = VERTICAL_COLUMN_KEY, layout = [
+                                [sg.Frame('Vertical', element_justification = 'center', layout =[[sg.Canvas(key = VERTICAL_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(20, 10)), sg.Push()]])]
+                        ]))],
+                        [sg.pin(sg.Column(visible=False, key = HORIZONTAL_COLUMN_KEY, layout = [
+                                [sg.Frame('Horizontal', element_justification = 'center', layout =[[sg.Canvas(key = HORIZONTAL_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(20, 10)), sg.Push()]])]
+                        ]))],
+                        [sg.pin(sg.Column(visible=False, key = OBLIQUE_COLUMN_KEY, layout = [
+                                [sg.Frame('Oblique', element_justification = 'center', layout =[[sg.Canvas(key = OBLIQUE_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(20, 10)), sg.Push()]])]
+                        ]))],
+                        [sg.pin(sg.Column(visible=False, key = CURV_COLUMN_KEY, layout = [
+                                [sg.Frame('Curvilinear', element_justification = 'center', layout =[[sg.Canvas(key = CURVILINEAR_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(20, 10)), sg.Push()]])]
+                        ]))]
+                    ])
 
 def _build_roots_frame():
     return sg.Frame('Roots', visible = STARTUP_VISIBILITY,  key = ROOTS_FRAME_KEY, layout =[[sg.T('', key = ROOTS_KEY)]])
