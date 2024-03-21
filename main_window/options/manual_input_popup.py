@@ -35,13 +35,7 @@ def _set_coefficients(numerator_values, denominator_values):
 def _set_roots(numerator_values, denominator_values):
     global numerator_roots, denominator_roots
     numerator_roots, denominator_roots = numerator_values, denominator_values
-
-def _add_value_to_numerator(numerator_degree, is_coefficients, i):
-    if is_coefficients:
-        return i <= numerator_degree
-    return i < numerator_degree
             
-
 def manual_popup(values):
     numerator_degree = values[MANUAL_NUM_DEG_SPIN_KEY]
     denominator_degree = values[MANUAL_DEN_DEG_SPIN_KEY]
@@ -78,7 +72,8 @@ def manual_popup(values):
                         all_values_entered = False
                         sg.popup(f'Some {gen_type} are in an invalid format')
                         break
-                    if _add_value_to_numerator(numerator_degree, is_coefficients, i):
+                    add_value_to_numerator = (i <= numerator_degree) if is_coefficients else (i < numerator_degree)
+                    if add_value_to_numerator:
                         numerator_values.append(value)
                     else:
                         denominator_values.append(value)
