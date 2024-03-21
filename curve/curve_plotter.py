@@ -5,7 +5,7 @@ import curve.curve_objects_initialiser as coi
 #global variables 
 x_lims = [-5000, 5000] #the graph is not plotted for x values past these limits
 delta = 0.0000001 #small value so that curve is evaluated close but not equal to discontinuities 
-data_points = 300000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
+data_points = 1000000 #number of data points plotted for each graph section and curvilinear asymptote. Greater numbers tends to cause noticeably slow execution
 
 def define_global_variables() -> None:
     global numerator, denominator, rational_function, num_coeffs, den_coeffs, discontinuities
