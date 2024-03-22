@@ -10,8 +10,7 @@ def draw_text_figure(canvas, text_fig):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
-#TODO: have width be dynamic depending on type of label
-def build_label(window, key, latex, fontsize, fig_height, fig_width, variable = None):
+def build_label(window, key, latex, fontsize, fig_height, fig_width, variable = None, x = -0.05, y = -0.01):
     plt.close()
     if variable is None:
         first = True
@@ -23,7 +22,7 @@ def build_label(window, key, latex, fontsize, fig_height, fig_width, variable = 
                 text_to_plot = f'${l}$'+'\n' + text_to_plot
     else:
         text_to_plot = f'${variable}={latex}$'
-    text = plt.text(-0.05, -0.01, text_to_plot, fontsize=fontsize)
+    text = plt.text(x, y, text_to_plot, fontsize=fontsize)
     text.set_backgroundcolor(window.BackgroundColor)
     text.get_figure().set_figheight(fig_height)
     text.get_figure().set_figwidth(fig_width)

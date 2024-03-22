@@ -44,13 +44,24 @@ class RationalFunction():
           self.second_der_evaluator = sp.lambdify(x, self.second_der_expression, "numpy")
           
           exp = self.rational_expression if not self.denominator_exp.is_Rational and not self.denominator_exp.is_Add else self.rational_expression_simp
-          self.discontinuities = self._find_discontinuities(exp) if not self.reduces_to_constant else []
+          if not self.reduces_to_constant:
+               inverted_rational_exp = sp.simplify(1/exp)
+               poles = sp.solve(inverted_rational_exp, x)
+               discontinuities = []
+               symbolic_discontinuities = []
+               for p in poles:
+                    if p.is_real:
+                         symbolic_discontinuities.append(p)
+                         discontinuities.append(float(p))
+                    self.discontinuities = sorted(discontinuities)
+          else:
+               self.discontinuities = []
           
           self.asymp_is_vert = False if not self.discontinuities else True
           if self.asymp_is_vert:
                vert_asymp_latex = []
-               for d in self.discontinuities:
-                    vert_asymp_latex.append(f'x = {d: .2f}') 
+               for d in symbolic_discontinuities:
+                    vert_asymp_latex.append(f'x = {sp.latex(d)}') 
                self.vert_asymp_latex = vert_asymp_latex
      
      def _set_asymp_bools(self, asymp_is_zero_hor, asymp_is_non_zero_hor, asymp_is_oblique, asymp_is_curv):
@@ -64,15 +75,6 @@ class RationalFunction():
           for coeff in numerator:
                n += coeff*(t**(len(numerator)-numerator.index(coeff)-1))
           return n
-
-     def _find_discontinuities(self, rational_expression):
-          inverted_rational_exp = sp.simplify(1/rational_expression)
-          poles = sp.solve(inverted_rational_exp, x)
-          discontinuities = []
-          for r in poles:
-               if r.is_real:
-                   discontinuities.append(float(r))
-          return sorted(discontinuities)
      
      def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
           if value_is_nice:
@@ -152,11 +154,6 @@ class RationalFunction():
           print(f'There {'is' if num_inflection_points==1 else 'are'} {num_inflection_points} non-stationary inflection point{'' if num_inflection_points==1 else 's'}')
           print(f'Non-stationary inflection points are: {self.inflection_points}')
           return self.inflection_points
-     
-     def calculate_derivative_coefficients(self, num_coeffs, den_coeffs):
-         der_num_coeffs = np.polysub(np.polymul(np.polyder(num_coeffs), den_coeffs), np.polymul(np.polyder(den_coeffs), num_coeffs))
-         der_den_coeffs = np.polymul(den_coeffs, den_coeffs)
-         return [der_num_coeffs, der_den_coeffs]
      
      def get_function_latex(self, latex_is_simplified):
           if latex_is_simplified:

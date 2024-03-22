@@ -2,12 +2,12 @@ from main_window.element_keys import *
 from main_window.equation_label_plotter import build_label
 import curve.curve_objects_initialiser as coi
 
-#TODO: include options for exact or approximate values 
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
 
 def _format_points_string(points):
     first = True
     for point in points:
+        point = str(point).replace('sqrt', '\u221a')
         if first:
             first = False
             string = f'{point}'
@@ -15,9 +15,24 @@ def _format_points_string(points):
             string = f'{point}, {string}'
     return string 
 
+def _sort_points_largest_to_smallest(points):
+    if (len(points)==0) or (len(points)==1):
+        return points
+    sorted_points = []
+    if isinstance(points[0], tuple): 
+        x_values = [x[0] for x in points]
+    else:
+        x_values = [float(x) for x in points]
+    while points:
+        max_index = x_values.index(max(x_values))
+        x_values.pop(max_index)
+        sorted_points.append(points.pop(max_index))
+    return sorted_points
+
+
 def _update_roots_info(window, display_analytics_as_decimals, decimal_places) -> None:
     decimal_places = decimal_places if display_analytics_as_decimals else None
-    roots = rational_function.calculate_roots(decimal_places)
+    roots = _sort_points_largest_to_smallest(rational_function.calculate_roots(decimal_places))
     if roots:
         window[ROOTS_KEY].update(value = _format_points_string(roots))
     else:
@@ -33,9 +48,9 @@ def _update_y_intercept_info(window, display_analytics_as_decimals, decimal_plac
 
 def _update_stationary_points_info(window, decimal_places) -> None:
     stat_points = rational_function.calc_and_classify_stationary_points(decimal_places=decimal_places)
-    minima = stat_points.get('Minima')
-    maxima = stat_points.get('Maxima')
-    stat_inflec_points = stat_points.get('Stationary inflection points')
+    minima = _sort_points_largest_to_smallest(stat_points.get('Minima'))
+    maxima = _sort_points_largest_to_smallest(stat_points.get('Maxima'))
+    stat_inflec_points = _sort_points_largest_to_smallest(stat_points.get('Stationary inflection points'))
     if minima:
         window[MINIMA_KEY].update(value = _format_points_string(minima))
     else:
@@ -51,7 +66,7 @@ def _update_stationary_points_info(window, decimal_places) -> None:
     return stat_inflec_points
 
 def _update_non_stat_inflection_points_info(window, decimal_places):
-    inflec_points = rational_function.calc_non_stationary_inflection_points(decimal_places=decimal_places)
+    inflec_points = _sort_points_largest_to_smallest(rational_function.calc_non_stationary_inflection_points(decimal_places=decimal_places))
     if inflec_points:
         window[NON_STAT_INFLEC_POINTS_KEY].update(value = _format_points_string(inflec_points))
     else:
@@ -89,7 +104,12 @@ def update_asymptote_labels(window, values):
     asymp_is_curv = rational_function.asymp_is_curv
     if plot_asymptotes:
         if asymp_is_vert:
-            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=0.5, fig_width=1.0)
+            if len(rational_function.discontinuities)==1:
+                fig_height = 0.5  
+            else: 
+                fig_height = 0.75
+                y = -0.025
+            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.0, y = -0.03)
         window[VERTICAL_COLUMN_KEY].update(visible = asymp_is_vert)
         non_vert_asymp_key = None
         if asymp_is_zero_hor or asymp_is_non_zero_hor:
