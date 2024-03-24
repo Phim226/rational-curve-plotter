@@ -108,8 +108,8 @@ def update_asymptote_labels(window, values):
                 fig_height = 0.5  
             else: 
                 fig_height = 0.75
-                y = -0.025
-            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.0, y = -0.03)
+                y = -0.015
+            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.1, y = -0.03)
         window[VERTICAL_COLUMN_KEY].update(visible = asymp_is_vert)
         non_vert_asymp_key = None
         if asymp_is_zero_hor or asymp_is_non_zero_hor:
@@ -117,13 +117,13 @@ def update_asymptote_labels(window, values):
             window[OBLIQUE_COLUMN_KEY].update(visible = False)
             window[CURV_COLUMN_KEY].update(visible = False)
             non_vert_asymp_key = HORIZONTAL_ASYMP_KEY
-            fig_width = 1.0
+            fig_width = 1.1
         elif asymp_is_oblique:
             window[OBLIQUE_COLUMN_KEY].update(visible = asymp_is_oblique)
             window[HORIZONTAL_COLUMN_KEY].update(visible = not asymp_is_oblique)
             window[CURV_COLUMN_KEY].update(visible = not asymp_is_oblique)
             non_vert_asymp_key = OBLIQUE_ASYMP_KEY
-            fig_width = 1.0
+            fig_width = 1.1
         elif asymp_is_curv and inc_curvilinear:
             window[CURV_COLUMN_KEY].update(visible = asymp_is_curv)
             window[HORIZONTAL_COLUMN_KEY].update(visible = not asymp_is_curv)
