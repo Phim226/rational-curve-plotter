@@ -13,13 +13,7 @@ def draw_text_figure(canvas, text_fig):
 def build_label(window, key, latex, fontsize, fig_height, fig_width, variable = None, x = -0.05, y = -0.01):
     plt.close()
     if variable is None:
-        first = True
-        for l in latex:
-            if first:
-                text_to_plot = f'${l}$'
-                first = False
-            else:
-                text_to_plot = f'${l}$'+'\n' + text_to_plot
+        text_to_plot = f'{latex}'
     else:
         text_to_plot = f'${variable}={latex}$'
     text = plt.text(x, y, text_to_plot, fontsize=fontsize)

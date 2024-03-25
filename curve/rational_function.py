@@ -61,7 +61,7 @@ class RationalFunction():
           if self.asymp_is_vert:
                vert_asymp_latex = []
                for d in symbolic_discontinuities:
-                    vert_asymp_latex.append(f'x = {sp.latex(d)}') 
+                    vert_asymp_latex.append(sp.latex(d))
                self.vert_asymp_latex = vert_asymp_latex
      
      def _set_asymp_bools(self, asymp_is_zero_hor, asymp_is_non_zero_hor, asymp_is_oblique, asymp_is_curv):
@@ -76,16 +76,6 @@ class RationalFunction():
                n += coeff*(t**(len(numerator)-numerator.index(coeff)-1))
           return n
      
-     def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
-          if value_is_nice:
-               return (sp.re(x_val), sp.re(self.function_evaluator(x_val)))
-          return (round(sp.re(x_val), decimal_places), round(sp.re(self.function_evaluator(x_val)), decimal_places))
-     
-     def _is_value_nice(self, val):
-          if isinstance(val, sp.Rational):
-               return True
-          return False
-
      def _calculate_der_expression_as_fraction(self, numerator_exp, denominator_exp):
           der_numerator_exp = sp.expand(sp.diff(numerator_exp)*denominator_exp - sp.diff(denominator_exp)*numerator_exp)
           der_denominator_exp = denominator_exp*denominator_exp
@@ -115,8 +105,18 @@ class RationalFunction():
           else:
                self.y_intercept = round(self.function_evaluator(0), decimals)
           return self.y_intercept
+     
+     def _get_point_on_curve(self, x_val, decimal_places, value_is_nice = False):
+          if value_is_nice:
+               return (sp.re(x_val), sp.re(self.function_evaluator(x_val)))
+          return (round(sp.re(x_val), decimal_places), round(sp.re(self.function_evaluator(x_val)), decimal_places))
+     
+     def _is_value_nice(self, val):
+          if isinstance(val, sp.Rational):
+               return True
+          return False
 
-     def calc_and_classify_stationary_points(self, decimal_places=None):
+     def calc_stationary_points(self, decimal_places=None):
           self.inflection_x_val, inflections, minima, maxima = [], [], [], []
           num_stat_points=0
           solutions = sp.solve(sp.simplify(self.der_expression), x)
@@ -139,7 +139,7 @@ class RationalFunction():
           print(f'Stationary points are: {self.stat_points}')
           return self.stat_points
      
-     def calc_non_stationary_inflection_points(self, decimal_places=None):
+     def calc_non_stat_inflec_points(self, decimal_places=None):
           self.inflection_points = []
           num_inflection_points = 0
           solutions = sp.solve(sp.simplify(self.second_der_expression), x)

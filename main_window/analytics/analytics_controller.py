@@ -4,18 +4,51 @@ import curve.curve_objects_initialiser as coi
 
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
 
-def _format_points_string(points):
+def _order_square_root_string(root_string):
+    if 'sqrt' in root_string and (' + ' in root_string or ' - ' in root_string):
+        root_component = 'sqrt{'
+        root_index = root_string.index(root_component)
+        if root_index==1:
+            sign_component = ' + '
+            root_component = f'\\{root_component}'
+        elif root_index==3:
+            sign_component = ' - '
+            root_component = f'\\{root_component}'
+        elif root_index==7:
+            sign_component = ' + '
+            root_component = r'\frac{' + f'\\{root_component}'
+        elif root_index==9:
+            sign_component = ' - '
+            root_component = r'\frac{' + f'\\{root_component}'
+        else:
+            return root_string
+        i = root_index + 5
+        while True:
+            next_char = root_string[i]
+            if next_char == ' ':
+                break
+            root_component += next_char
+            i += 1
+        rational_component = '-' if root_string[i+1]=='-' else ''
+        rational_component += root_string[i+3:]
+        ordered_string = f'{rational_component}{sign_component}{root_component}'
+        return ordered_string 
+    return root_string
+
+def _format_string(points, is_asymp_string = False):
     first = True
+    sep_char = '\n' if is_asymp_string else ', '
+    var = 'x = ' if is_asymp_string else ''
+    latex_symbol = '$' if is_asymp_string else ''
     for point in points:
-        point = str(point).replace('sqrt', '\u221a')
         if first:
             first = False
-            string = f'{point}'
+            string = f'{latex_symbol}{var}{point}{latex_symbol}'
         else:
-            string = f'{point}, {string}'
+            string = f'{latex_symbol}{var}{point}{latex_symbol}{sep_char}{string}'
     return string 
 
-def _sort_points_largest_to_smallest(points):
+def _sort_points_descending(points):
     if (len(points)==0) or (len(points)==1):
         return points
     sorted_points = []
@@ -32,9 +65,9 @@ def _sort_points_largest_to_smallest(points):
 
 def _update_roots_info(window, display_analytics_as_decimals, decimal_places) -> None:
     decimal_places = decimal_places if display_analytics_as_decimals else None
-    roots = _sort_points_largest_to_smallest(rational_function.calculate_roots(decimal_places))
+    roots = _sort_points_descending(rational_function.calculate_roots(decimal_places))
     if roots:
-        window[ROOTS_KEY].update(value = _format_points_string(roots))
+        window[ROOTS_KEY].update(value = _format_string(roots))
     else:
         window[ROOTS_KEY].update(value = "There are no real roots")
 
@@ -47,28 +80,28 @@ def _update_y_intercept_info(window, display_analytics_as_decimals, decimal_plac
         window[Y_INTERCEPT_KEY].update(value = f"Curve crosses the y-axis at y = {y_intercept}")
 
 def _update_stationary_points_info(window, decimal_places) -> None:
-    stat_points = rational_function.calc_and_classify_stationary_points(decimal_places=decimal_places)
-    minima = _sort_points_largest_to_smallest(stat_points.get('Minima'))
-    maxima = _sort_points_largest_to_smallest(stat_points.get('Maxima'))
-    stat_inflec_points = _sort_points_largest_to_smallest(stat_points.get('Stationary inflection points'))
+    stat_points = rational_function.calc_stationary_points(decimal_places=decimal_places)
+    minima = _sort_points_descending(stat_points.get('Minima'))
+    maxima = _sort_points_descending(stat_points.get('Maxima'))
+    stat_inflec_points = _sort_points_descending(stat_points.get('Stationary inflection points'))
     if minima:
-        window[MINIMA_KEY].update(value = _format_points_string(minima))
+        window[MINIMA_KEY].update(value = _format_string(minima))
     else:
         window[MINIMA_KEY].update(value = 'There are no minima')
     if maxima:
-        window[MAXIMA_KEY].update(value = _format_points_string(maxima))
+        window[MAXIMA_KEY].update(value = _format_string(maxima))
     else:
         window[MAXIMA_KEY].update(value = 'There are no maxima')
     if stat_inflec_points:
-        window[STAT_INFLEC_POINTS_KEY].update(value = _format_points_string(stat_inflec_points))
+        window[STAT_INFLEC_POINTS_KEY].update(value = _format_string(stat_inflec_points))
     else:
         window[STAT_INFLEC_POINTS_KEY].update(value = 'There are no stationary inflection points')
     return stat_inflec_points
 
 def _update_non_stat_inflection_points_info(window, decimal_places):
-    inflec_points = _sort_points_largest_to_smallest(rational_function.calc_non_stationary_inflection_points(decimal_places=decimal_places))
+    inflec_points = _sort_points_descending(rational_function.calc_non_stat_inflec_points(decimal_places=decimal_places))
     if inflec_points:
-        window[NON_STAT_INFLEC_POINTS_KEY].update(value = _format_points_string(inflec_points))
+        window[NON_STAT_INFLEC_POINTS_KEY].update(value = _format_string(inflec_points))
     else:
         window[NON_STAT_INFLEC_POINTS_KEY].update(value = 'There are no non-stationary inflection points')
 
@@ -105,11 +138,11 @@ def update_asymptote_labels(window, values):
     if plot_asymptotes:
         if asymp_is_vert:
             if len(rational_function.discontinuities)==1:
-                fig_height = 0.5  
+                fig_height = 0.5
             else: 
                 fig_height = 0.75
-                y = -0.015
-            build_label(window, VERTICAL_ASYMP_KEY, rational_function.vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.1, y = -0.03)
+            vert_asymp_latex = _format_string([_order_square_root_string(l) for l in rational_function.vert_asymp_latex], is_asymp_string=True)
+            build_label(window, VERTICAL_ASYMP_KEY, vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.1, y = -0.025)
         window[VERTICAL_COLUMN_KEY].update(visible = asymp_is_vert)
         non_vert_asymp_key = None
         if asymp_is_zero_hor or asymp_is_non_zero_hor:
