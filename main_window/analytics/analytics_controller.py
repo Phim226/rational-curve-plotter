@@ -4,10 +4,10 @@ import curve.curve_objects_initialiser as coi
 
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
 
-def _order_square_root_string(root_string):
-    if 'sqrt' in root_string and (' + ' in root_string or ' - ' in root_string):
+def _order_square_root_latex(root_latex):
+    if 'sqrt' in root_latex and (' + ' in root_latex or ' - ' in root_latex):
         root_component = 'sqrt{'
-        root_index = root_string.index(root_component)
+        root_index = root_latex.index(root_component)
         if root_index==1:
             sign_component = ' + '
             root_component = f'\\{root_component}'
@@ -21,32 +21,36 @@ def _order_square_root_string(root_string):
             sign_component = ' - '
             root_component = r'\frac{' + f'\\{root_component}'
         else:
-            return root_string
+            return root_latex
         i = root_index + 5
         while True:
-            next_char = root_string[i]
+            next_char = root_latex[i]
             if next_char == ' ':
                 break
             root_component += next_char
             i += 1
-        rational_component = '-' if root_string[i+1]=='-' else ''
-        rational_component += root_string[i+3:]
-        ordered_string = f'{rational_component}{sign_component}{root_component}'
-        return ordered_string 
-    return root_string
+        rational_component = '-' if root_latex[i+1]=='-' else ''
+        rational_component += root_latex[i+3:]
+        ordered_latex = f'{rational_component}{sign_component}{root_component}'
+        return ordered_latex 
+    return root_latex
 
-def _format_string(points, is_asymp_string = False):
+def _format_latex(latex, var = None, not_point_latex = False):
     first = True
-    sep_char = '\n' if is_asymp_string else ', '
-    var = 'x = ' if is_asymp_string else ''
-    latex_symbol = '$' if is_asymp_string else ''
-    for point in points:
-        if first:
-            first = False
-            string = f'{latex_symbol}{var}{point}{latex_symbol}'
-        else:
-            string = f'{latex_symbol}{var}{point}{latex_symbol}{sep_char}{string}'
-    return string 
+    sep_char = '\n' if not_point_latex else ', '
+    var = f'{var} = ' if not_point_latex else ''
+    latex_symbol = '$' if not_point_latex else ''
+    if isinstance(latex, list):
+        for l in latex:
+            if first:
+                first = False
+                latex = f'{latex_symbol}{var}{l}{latex_symbol}'
+            else:
+                latex = f'{latex_symbol}{var}{l}{latex_symbol}{sep_char}{latex}'
+        return latex
+    else:
+        latex = f'{latex_symbol}{var}{latex}{latex_symbol}'
+        return latex
 
 def _sort_points_descending(points):
     if (len(points)==0) or (len(points)==1):
@@ -67,7 +71,7 @@ def _update_roots_info(window, display_analytics_as_decimals, decimal_places) ->
     decimal_places = decimal_places if display_analytics_as_decimals else None
     roots = _sort_points_descending(rational_function.calculate_roots(decimal_places))
     if roots:
-        window[ROOTS_KEY].update(value = _format_string(roots))
+        window[ROOTS_KEY].update(value = _format_latex(roots))
     else:
         window[ROOTS_KEY].update(value = "There are no real roots")
 
@@ -85,23 +89,22 @@ def _update_stationary_points_info(window, decimal_places) -> None:
     maxima = _sort_points_descending(stat_points.get('Maxima'))
     stat_inflec_points = _sort_points_descending(stat_points.get('Stationary inflection points'))
     if minima:
-        window[MINIMA_KEY].update(value = _format_string(minima))
+        window[MINIMA_KEY].update(value = _format_latex(minima))
     else:
         window[MINIMA_KEY].update(value = 'There are no minima')
     if maxima:
-        window[MAXIMA_KEY].update(value = _format_string(maxima))
+        window[MAXIMA_KEY].update(value = _format_latex(maxima))
     else:
         window[MAXIMA_KEY].update(value = 'There are no maxima')
     if stat_inflec_points:
-        window[STAT_INFLEC_POINTS_KEY].update(value = _format_string(stat_inflec_points))
+        window[STAT_INFLEC_POINTS_KEY].update(value = _format_latex(stat_inflec_points))
     else:
         window[STAT_INFLEC_POINTS_KEY].update(value = 'There are no stationary inflection points')
-    return stat_inflec_points
 
 def _update_non_stat_inflection_points_info(window, decimal_places):
     inflec_points = _sort_points_descending(rational_function.calc_non_stat_inflec_points(decimal_places=decimal_places))
     if inflec_points:
-        window[NON_STAT_INFLEC_POINTS_KEY].update(value = _format_string(inflec_points))
+        window[NON_STAT_INFLEC_POINTS_KEY].update(value = _format_latex(inflec_points))
     else:
         window[NON_STAT_INFLEC_POINTS_KEY].update(value = 'There are no non-stationary inflection points')
 
@@ -124,8 +127,8 @@ def update_analytics_section_visiblity(window, visible) -> None:
 def update_derivative_label(window, display_der_as_fraction, latex_is_simplified):
     key = DERIVATIVE_LABEL_KEY
     exp = rational_function.der_expression_as_fraction if display_der_as_fraction or latex_is_simplified else rational_function.der_expression
-    latex = rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified)
-    build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2, variable='y')
+    latex = _format_latex(rational_function.get_derivative_latex(display_der_as_fraction, latex_is_simplified), var='y', not_point_latex=True)
+    build_label(window, key, latex, fontsize=12, fig_height=0.5, fig_width=3.2)
 
 def update_asymptote_labels(window, values):
     plot_asymptotes = values[PLOT_ASYMP_KEY]
@@ -141,8 +144,8 @@ def update_asymptote_labels(window, values):
                 fig_height = 0.5
             else: 
                 fig_height = 0.75
-            vert_asymp_latex = _format_string([_order_square_root_string(l) for l in rational_function.vert_asymp_latex], is_asymp_string=True)
-            build_label(window, VERTICAL_ASYMP_KEY, vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.1, y = -0.025)
+            vert_asymp_latex = _format_latex([_order_square_root_latex(l) for l in rational_function.vert_asymp_latex], var = 'x', not_point_latex=True)
+            build_label(window, VERTICAL_ASYMP_KEY, vert_asymp_latex, fontsize=10, fig_height=fig_height, fig_width=1.1, y = -0.015)
         window[VERTICAL_COLUMN_KEY].update(visible = asymp_is_vert)
         non_vert_asymp_key = None
         if asymp_is_zero_hor or asymp_is_non_zero_hor:
@@ -164,7 +167,8 @@ def update_asymptote_labels(window, values):
             non_vert_asymp_key = CURVILINEAR_ASYMP_KEY
             fig_width = 1.5
         if non_vert_asymp_key is not None:
-            build_label(window, non_vert_asymp_key, rational_function.non_vert_asymp_latex, fontsize=10, fig_height=0.5, fig_width=fig_width, variable = 'y')
+            non_vert_asymp_latex = _format_latex(rational_function.non_vert_asymp_latex, var = 'y', not_point_latex=True)
+            build_label(window, non_vert_asymp_key, non_vert_asymp_latex, fontsize=10, fig_height=0.5, fig_width=fig_width)
     else:
         window[VERTICAL_COLUMN_KEY].update(visible = False)
         window[CURV_COLUMN_KEY].update(visible = False)
