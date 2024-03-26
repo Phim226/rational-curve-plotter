@@ -10,9 +10,9 @@ def draw_text_figure(canvas, text_fig):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
-def build_label(window, key, latex, fontsize, fig_height, fig_width, x = -0.05, y = -0.01):
+def build_label(window, key, latex, fontsize, fig_height, fig_width, x = -0.05, y = -0.01, colour = None):
     plt.close()
-    text = plt.text(x, y, latex, fontsize=fontsize)
+    text = plt.text(x, y, latex, fontsize=fontsize, color = colour)
     text.set_backgroundcolor(window.BackgroundColor)
     text.get_figure().set_figheight(fig_height)
     text.get_figure().set_figwidth(fig_width)

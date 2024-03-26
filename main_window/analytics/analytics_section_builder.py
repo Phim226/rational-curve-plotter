@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 STARTUP_VISIBILITY = True
 
 def _build_asymptotes_frame():
-    return sg.Frame('Asymptotes', visible = STARTUP_VISIBILITY, key = ASYMPTOTES_FRAME_KEY, layout =[
+    return sg.Frame('Asymptotes', visible = STARTUP_VISIBILITY, key = ASYMPTOTES_FRAME_KEY, expand_y=True, layout =[
                         [sg.pin(sg.Column(visible=False, key = VERTICAL_COLUMN_KEY, layout = [
                                 [sg.Frame('Vertical', element_justification = 'center', layout =[[sg.Canvas(key = VERTICAL_ASYMP_KEY, visible = STARTUP_VISIBILITY, size=(20, 10)), sg.Push()]])]
                         ]))],
@@ -20,13 +20,14 @@ def _build_asymptotes_frame():
                     ])
 
 def _build_roots_frame():
-    return sg.Frame('Roots', visible = STARTUP_VISIBILITY,  key = ROOTS_FRAME_KEY, layout =[[sg.T('', key = ROOTS_KEY)]])
+    return sg.Frame('Roots', visible = STARTUP_VISIBILITY,  key = ROOTS_FRAME_KEY, expand_y=True, layout =[[sg.pin(sg.T('', key = ROOTS_KEY))],
+                                                                                            [sg.pin(sg.Canvas(visible=False, key = ROOTS_CANVAS_KEY))]])
 
 def _build_y_intercept_frame():
-    return sg.Frame('y-intercept', visible = STARTUP_VISIBILITY, key = Y_INTERCEPT_FRAME_KEY, layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])
+    return sg.Frame('y-intercept', visible = STARTUP_VISIBILITY, key = Y_INTERCEPT_FRAME_KEY, expand_y=True, layout =[[sg.T('', key = Y_INTERCEPT_KEY)]])
 
 def _build_derivative_frame():
-    return sg.Frame('Derivative', visible = STARTUP_VISIBILITY, key = DERIVATIVE_FRAME_KEY, layout =[
+    return sg.Frame('Derivative', visible = STARTUP_VISIBILITY, key = DERIVATIVE_FRAME_KEY, expand_y=True, layout =[
                         [sg.Canvas(key = DERIVATIVE_LABEL_KEY, visible = True, size=(50, 50))],
                         [sg.Column([[sg.T('Minima:', font = 'Helvetica 9 underline bold')],
                                    [sg.T('', key = MINIMA_KEY)],

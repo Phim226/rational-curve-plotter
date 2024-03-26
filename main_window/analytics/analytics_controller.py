@@ -1,6 +1,7 @@
 from main_window.element_keys import *
 from main_window.equation_label_plotter import build_label
 import curve.curve_objects_initialiser as coi
+import sympy as sp
 
 #TODO: include option for roots to be displayed using unicode square root and imaginary unit (\u221a and \u2148 respectively)
 
@@ -37,10 +38,10 @@ def _order_square_root_latex(root_latex):
 
 def _format_latex(latex, var = None, not_point_latex = False):
     first = True
-    sep_char = '\n' if not_point_latex else ', '
     var = f'{var} = ' if not_point_latex else ''
-    latex_symbol = '$' if not_point_latex else ''
     if isinstance(latex, list):
+        sep_char = '\n' if not_point_latex else ', '
+        latex_symbol = '$' if not_point_latex else ''
         for l in latex:
             if first:
                 first = False
@@ -49,7 +50,7 @@ def _format_latex(latex, var = None, not_point_latex = False):
                 latex = f'{latex_symbol}{var}{l}{latex_symbol}{sep_char}{latex}'
         return latex
     else:
-        latex = f'{latex_symbol}{var}{latex}{latex_symbol}'
+        latex = f'${var}{latex}$'
         return latex
 
 def _sort_points_descending(points):
@@ -70,10 +71,17 @@ def _sort_points_descending(points):
 def _update_roots_info(window, display_analytics_as_decimals, decimal_places) -> None:
     decimal_places = decimal_places if display_analytics_as_decimals else None
     roots = _sort_points_descending(rational_function.calculate_roots(decimal_places))
+    roots = [_order_square_root_latex(sp.latex(root)) for root in roots]
     if roots:
-        window[ROOTS_KEY].update(value = _format_latex(roots))
+        #window[ROOTS_KEY].update(value = _format_latex(roots))
+        window[ROOTS_CANVAS_KEY].update(visible = True)
+        latex = _format_latex(roots)
+        build_label(window, ROOTS_CANVAS_KEY, latex, fontsize=10, fig_height=0.3, fig_width=2.0, colour = 'white')
+        window[ROOTS_KEY].update(visible = False)
     else:
         window[ROOTS_KEY].update(value = "There are no real roots")
+        window[ROOTS_CANVAS_KEY].update(visible = False)
+        window[ROOTS_KEY].update(visible = True)
 
 def _update_y_intercept_info(window, display_analytics_as_decimals, decimal_places) -> None:
     decimal_places = decimal_places if display_analytics_as_decimals else None
